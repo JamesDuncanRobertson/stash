@@ -173,15 +173,6 @@
         
         .action-btn:hover:not(:disabled) .desc { color: #666; }
         
-        .action-note {
-            text-align: center;
-            font-size: 0.65rem;
-            color: #888;
-            margin-top: 20px;
-            margin-bottom: 28px;
-            letter-spacing: 0.1em;
-        }
-        
         .history {
             border-top: 1px solid #252525;
             padding-top: 32px;
@@ -382,8 +373,6 @@
                 <button class="action-btn" data-action="6"><span class="key">7</span>Equalize<span class="desc">Share (if richer)</span></button>
             </div>
             
-            <div class="action-note">You cannot kill or be killed with $0</div>
-            
             <div class="history">
                 <div class="history-title">Game History</div>
                 <div id="history"></div>
@@ -394,18 +383,19 @@
             <h3>How It Works</h3>
             <ul>
                 <li>You and the machine each start with $10</li>
-                <li>Each round, you both secretly choose an action</li>
-                <li>Actions resolve simultaneously. Neither player goes first</li>
-                <li>The game ends randomly. Whoever is richer wins</li>
+                <li>Each round, you both choose an action in secret</li>
+                <li>You can double your money, steal from your opponent, etc</li>
+                <li>The goal is to make as much money as you can</li>
+                <li>The game ends suddenly and randomly</li>
+                <li>Whoever is richer, wins</li>
             </ul>
         </div>
         
         <div class="rules">
-            <h3>The Kill Mechanic</h3>
-            <p>By killing your opponent, you win instantly.</p>
+            <h3>Killing</h3>
+            <p>You can end the game and win it by killing your opponent.</p>
             <p>You can only kill if you're the poorer player.</p>
-            <p>You need money to kill. You can't kill with $0.</p>
-            <p>You can't be killed with $0, either.</p>
+            <p>You can't kill or be killed with $0.</p>
         </div>
         
         <div class="rules">
