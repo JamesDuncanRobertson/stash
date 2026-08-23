@@ -210,7 +210,7 @@ header p { font-size: 11px; font-weight: 300; letter-spacing: 0.12em; color: #88
   </div>
 
   <div class="actions" id="actions">
-    <button class="action-btn verb-btn" data-verb="double"><span class="name">Double</span><span class="desc">any pile</span></button>
+    <button class="action-btn verb-btn" data-verb="double"><span class="name">Double</span><span class="desc">or add to pile</span></button>
     <button class="action-btn verb-btn" data-verb="halve"><span class="name">Halve</span><span class="desc">any pile</span></button>
     <button class="action-btn verb-btn" data-verb="move"><span class="name">Move</span><span class="desc">any pile</span></button>
     <button class="action-btn verb-btn" data-verb="swap"><span class="name">Swap</span><span class="desc">two piles</span></button>
@@ -219,7 +219,7 @@ header p { font-size: 11px; font-weight: 300; letter-spacing: 0.12em; color: #88
 
   <div class="history-list" id="log"></div>
   <div class="exec-order" style="margin-bottom: 14px;"><span class="exec-title">How to Play</span>First hand to $20K wins</div>
-  <div class="exec-order"><span class="exec-title">Resolution Order</span>Double → Halve → Stash → Move → Swap</div>
+  <div class="exec-order"><span class="exec-title">Resolution Order</span>Double then Halve then Stash then Move then Swap</div>
   
 
   
@@ -229,14 +229,22 @@ header p { font-size: 11px; font-weight: 300; letter-spacing: 0.12em; color: #88
 <div class="info-veil" id="iv"></div>
 <div class="info-panel" id="ip">
   <div class="how-to-play">
-    <div class="htp-title">How to Play</div>
-    <p>First hand to reach $20,000 wins.</p>
-    <p>Each round, you and your opponent secretly pick one action. Both happen at the same time.</p>
-    <p>You can double or halve any pile, move money between any piles, swap any piles, or guard your own for a round.</p>
-    <p>Double adds to an empty pile.</p>
-    <p>Stash does not protect from Halve or Double.</p>
+    <div class="htp-title">What Is This Game</div>
+    <p>Stash is a fun game-theory project that I created, to try to learn more about two things: game-theory &amp; AI.</p>
+    <p>My goal is to design a game which is balanced &amp; fun to play. And, to train the strongest possible AI player for Stash.</p>
+    <p>The current AI player is ok. Not world-class. If anyone out there knows how to make a stronger one, contact me.</p>
+    <p>Unlike turn-based games like chess, play in Stash is simultaneous. You and your opponent make your moves and play them together at the same time.</p>
+    <div class="htp-title" style="margin-top: 18px;">How to Play</div>
+    <p>The winner is the first player to put 20k or more in their hand.</p>
+    <p>Any pile can be doubled, halved, moved, or swapped with another.</p>
+    <p>While you are making your move, your opponent is making their move.</p>
+    <p>Moves play out at the same time, but there is a resolution order for different actions.</p>
+    <p style="padding-left: 14px;">Double then Halve then Stash then Move then Swap.</p>
+    <p>Stash makes your pile immune to Move or Swap. But your pile can still be Doubled or Halved.</p>
+    <p>Double adds money to an empty pile.</p>
+    <p>Thanks for visiting and I hope you enjoy playing Stash.</p>
+    <p>Contact: James@greyblue.ai</p>
   </div>
-  
 </div>
 
 <div id="lobby">
@@ -726,12 +734,16 @@ async function play(a1){
     if(a2===null)return;
   }
   lastA1=a1;lastA2=a2;
+  track('move',{r:rnd,you:NA[a1],opp:NA[a2],p1:p1,p2:p2,pot:pot});
   const r=resolve(a1,a2);
   const body=r.n.length?r.n.join(' '):'Nothing happened.';
   lastBody=body;
   lg('<span class="detail">'+body+'</span>');
   animateSteps(r.steps,()=>{
-    if(r.w!==-1){done=true;lg('<span class="'+(r.w===1?'win-text':'lose-text')+'">'+(r.w===1?'✦ WIN':r.w===2?'✦ LOSS':'✦ DRAW')+'</span>');updateAll();setTimeout(()=>show(r.w),450);return;}
+    if(r.w!==-1){done=true;
+      track('game_end',{result:r.w===1?'win':r.w===2?'loss':'draw',rounds:rnd,
+        seconds:Math.round((Date.now()-matchT0)/1000),opponent:oppId,
+        you:fmtLong(p1),opp:fmtLong(p2)});lg('<span class="'+(r.w===1?'win-text':'lose-text')+'">'+(r.w===1?'✦ WIN':r.w===2?'✦ LOSS':'✦ DRAW')+'</span>');updateAll();setTimeout(()=>show(r.w),450);return;}
     rnd++;updateAll();btns(true);
   });
 }
@@ -747,6 +759,8 @@ function show(w){
 }
 
 function reset(){
+  matchT0=Date.now();
+  if(MODE)track('game_start',{opponent:oppId});
   p1=HAND_START;p2=HAND_START;pot=SP;rnd=1;done=false;
   prevP1=HAND_START;prevP2=HAND_START;prevPot=SP;
   $('ov').classList.add('hidden');$('log').innerHTML='';
@@ -809,8 +823,23 @@ let oppMoves={},moveWaiter=null,meAgain=false,oppAgain=false;
 let lobbyChan=null,lobbyTick=null,myName=null,lobbyOpen=false;
 try{myName=localStorage.getItem('stashName');}catch(e){}
 
+// ── telemetry: every visit, match, move, and result → Supabase 'events' table ──
+let DEVID=MYID;
+try{
+  DEVID=localStorage.getItem('stashDev')||'';
+  if(!DEVID){DEVID=Math.random().toString(36).slice(2,12);localStorage.setItem('stashDev',DEVID);}
+}catch(e){}
+let curRoom=null,oppId=null,matchT0=Date.now();
+function track(type,data){
+  try{
+    client().from('events').insert({player:DEVID,name:myName||null,room:curRoom,
+      mode:MODE,type:type,data:data||{}}).then(()=>{},()=>{});
+  }catch(e){}
+}
+
 function startMachine(){
-  MODE='machine';
+  MODE='machine';curRoom=null;oppId='machine';
+  track('match_start',{opponent:'machine'});
   if(chan){chan.unsubscribe();chan=null;}
   $('lobby').classList.add('hidden');
   reset();
@@ -880,6 +909,7 @@ function leaveRoom(){
 }
 
 function connect(code){
+  curRoom=code;
   if(SUPABASE_URL.indexOf('PASTE')===0){$('lb-note').textContent='Add your Supabase URL and key at the top of the script first.';goLb('lb-mode');return;}
   if(chan){chan.unsubscribe();chan=null;}
   chan=client().channel('stash-'+code,{config:{broadcast:{self:false},presence:{key:MYID}}});
@@ -891,6 +921,7 @@ function connect(code){
     if(mpReady){
       mpReady=false;done=true;btns(false);
       lg('<span class="detail">Your opponent left.</span>');
+      track('opponent_left',{r:rnd,seconds:Math.round((Date.now()-matchT0)/1000)});
       if(moveWaiter){const w=moveWaiter;moveWaiter=null;w.res(null);}
     }
   });
@@ -898,6 +929,8 @@ function connect(code){
 }
 function matchStart(){
   MODE='human';
+  try{oppId=Object.keys(chan.presenceState()).find(k=>k!==MYID)||null;}catch(e){oppId=null;}
+  track('match_start',{room:curRoom,opponent:oppId});
   mpReady=true;oppMoves={};moveWaiter=null;meAgain=oppAgain=false;
   if(lobbyOpen&&lobbyChan){lobbyChan.untrack();lobbyOpen=false;}
   clearInterval(lobbyTick);
@@ -930,6 +963,7 @@ function maybeRematch(){
 }
 
 // boot: show the lobby, keep the board locked until a match starts
+track('session_start',{ua:navigator.userAgent.slice(0,120)});
 reset();btns(false);goLb('lb-mode');
 
 </script>
