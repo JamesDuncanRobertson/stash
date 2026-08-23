@@ -26,6 +26,9 @@ header { text-align: center; margin-bottom: 40px; }
 header h1 { font-size: 13px; font-weight: 400; letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 8px; }
 header p { font-size: 11px; font-weight: 300; letter-spacing: 0.12em; color: #888; }
 
+.pile.guarded { animation: guardflash 0.55s ease; }
+@keyframes guardflash { 0% { border-color: transparent; } 30% { border-color: #999; } 100% { border-color: transparent; } }
+.round-ind { text-align: center; font-size: 9px; font-weight: 400; letter-spacing: 0.3em; text-transform: uppercase; color: #555; margin: -24px 0 28px; }
 .meta { display: flex; justify-content: space-between; align-items: center; font-size: 10px; color: #777; margin-bottom: 32px; }
 
 .pot-section { text-align: center; margin-bottom: 48px; padding: 18px 24px; }
@@ -158,6 +161,7 @@ header p { font-size: 11px; font-weight: 300; letter-spacing: 0.12em; color: #88
 @media (max-height: 780px) {
   body { padding: 20px 20px 14px; }
   header { margin-bottom: 22px; }
+  .round-ind { margin: -10px 0 16px; }
   .players { margin-bottom: 18px; }
   .player { padding: 10px 12px; }
   .player .amount { font-size: 20px; }
@@ -186,6 +190,8 @@ header p { font-size: 11px; font-weight: 300; letter-spacing: 0.12em; color: #88
     <p>Don't get played</p>
   </header>
 
+
+  <div class="round-ind" id="rc">Round 1</div>
 
   <div class="players">
     <div class="player pile" id="pile-0" data-pile="0">
@@ -357,7 +363,7 @@ function simResolve(P,H1,H2,a1,a2){
     for(let i=0;i<3;i++)pi[i]=snap[i]-out[i]+inn[i];
   }
   let swaps=[];
-  for(const [op,actor] of [[o1,0],[o2,1]])if(op.t==='swap')swaps.push({op,actor});
+  for(const [op,actor] of [[o1,0],[o2,1]])if(op.t==='swap')swaps.push({op,actor,c:actor===0?a1:a2});
   if(swaps.length===2&&swaps[0].op.x===swaps[1].op.x&&swaps[0].op.y===swaps[1].op.y){
     // cancel
   }else{
@@ -368,12 +374,12 @@ function simResolve(P,H1,H2,a1,a2){
         const half=Math.floor(pi[2]/2),don=pi[0]+pi[1];
         pi[0]=half;pi[1]=half;pi[2]=don;swaps=[];
       }
-      else if(m0!==m1){swaps.sort((A,B)=>(isMed(B)?1:0)-(isMed(A)?1:0));}
       else if(swaps.every(s=>s.op.x===s.actor&&s.op.y===2)){
         const half=Math.floor(pi[2]/2),don=pi[0]+pi[1];
         pi[0]=half;pi[1]=half;pi[2]=don;swaps=[];
       }
     }
+    swaps.sort((A,B)=>B.c-A.c);
     for(const {op,actor} of swaps){
       const bl=(op.x<=1&&guard[op.x]&&op.x!==actor)||(op.y<=1&&guard[op.y]&&op.y!==actor);
       if(!bl){const t=pi[op.x];pi[op.x]=pi[op.y];pi[op.y]=t;}
@@ -490,7 +496,15 @@ function animateValue(el,start,end,duration,fmtFn){
     if(p<1)requestAnimationFrame(tick);};
   requestAnimationFrame(tick);
 }
+function flashGuard(i){
+  const el=$('pile-'+i);
+  el.classList.remove('guarded');
+  void el.offsetWidth;               // restart the animation if it just ran
+  el.classList.add('guarded');
+  setTimeout(()=>el.classList.remove('guarded'),600);
+}
 function updateAll(){
+  $('rc').textContent='Round '+rnd;
   animateValue($('y-val'),prevP1,p1,220,fmtLong);animateValue($('o-val'),prevP2,p2,220,fmtLong);
   animateValue($('p-val'),prevPot,pot,220,fmtLong);
   prevP1=p1;prevP2=p2;prevPot=pot;
@@ -558,8 +572,8 @@ function resolve(a1,a2){
   snapStep();
 
   // 2. STASH
-  if(o1.t==='stash'){guard[0]=true;n.push('You stashed.');}
-  if(o2.t==='stash'){guard[1]=true;n.push('Your opponent stashed.');}
+  if(o1.t==='stash'){guard[0]=true;n.push('You stashed.');flashGuard(0);}
+  if(o2.t==='stash'){guard[1]=true;n.push('Your opponent stashed.');flashGuard(1);}
 
   // 3. HALVE — cuts through Stash
   for(const [op,actor] of [[o1,0],[o2,1]]){
@@ -619,7 +633,7 @@ function resolve(a1,a2){
   const swaps=[];
   for(const [op,actor] of [[o1,0],[o2,1]]){
     if(op.t!=='swap')continue;
-    swaps.push({op,actor});
+    swaps.push({op,actor,c:actor===0?a1:a2});
   }
   if(swaps.length===2&&swaps[0].op.x===swaps[1].op.x&&swaps[0].op.y===swaps[1].op.y){
     n.push('Both swaps cancelled.');
@@ -635,8 +649,6 @@ function resolve(a1,a2){
         pot=donated; p1=half; p2=half;
         n.push('The pot split. Both hands went in.');
         swaps.length=0;
-      } else if(m0!==m1){
-        swaps.sort((A,B)=>(isMeddle(B)?1:0)-(isMeddle(A)?1:0));
       } else {
         // both swapping own hand with the pot: split the pot, both hands donated
         const bothSelfPot=swaps.every(s=>s.op.x===s.actor&&s.op.y===2);
@@ -649,6 +661,7 @@ function resolve(a1,a2){
         }
       }
     }
+    swaps.sort((A,B)=>B.c-A.c);   // canonical: Opp↔Pot, then You↔Pot, then hands — seat-symmetric
     for(const {op,actor} of swaps){
       const blocked=(op.x<=1&&guard[op.x]&&op.x!==actor)||(op.y<=1&&guard[op.y]&&op.y!==actor);
       if(blocked){n.push(whose(actor)+' swap was blocked.');continue;}
