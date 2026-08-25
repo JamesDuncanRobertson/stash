@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -74,8 +74,10 @@ header p { font-size: 11px; font-weight: 300; letter-spacing: 0.12em; color: #88
 .info-panel .how-to-play { margin-top: 0; padding-top: 0; border-top: none; max-width: 440px; margin: 0 auto; }
 .info-panel .htp-title { font-size: 12px; letter-spacing: 0.35em; color: #999; margin: 0 0 24px; }
 .info-panel .how-to-play p { font-size: 16px; font-weight: 300; color: #ddd; line-height: 1.75; margin-bottom: 18px; }
-.info-panel .order-line { text-align: center; font-size: 15px; color: #fff; letter-spacing: 0.04em; padding: 14px 0; border-top: 1px solid #1c1c1c; border-bottom: 1px solid #1c1c1c; margin: 4px 0 22px; }
+.info-panel .order-line { text-align: center; font-size: clamp(11px, 3vw, 16px); font-weight: 500; color: #fff; letter-spacing: 0.01em; white-space: nowrap; padding: 16px 0; border-top: 1px solid #262626; border-bottom: 1px solid #262626; margin: 6px 0 24px; }
 .info-panel .contact { color: #888; font-size: 14px; }
+.info-link { display: block; width: 100%; margin-top: 32px; background: #111; border: 1px solid #262626; border-radius: 8px; padding: 16px 8px; text-align: center; font-size: 12px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #ddd; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.15s; -webkit-tap-highlight-color: transparent; }
+.info-link:hover { background: #181818; border-color: #333; color: #fff; }
 .info-close { position: fixed; top: 18px; right: 20px; width: 36px; height: 36px; border-radius: 50%; background: #141414; border: 1px solid #262626; color: #bbb; font-size: 17px; font-family: 'Inter', sans-serif; cursor: pointer; z-index: 61; -webkit-tap-highlight-color: transparent; }
 
 .round-dots { display: flex; justify-content: center; gap: 8px; margin: 18px 0 30px; }
@@ -192,7 +194,7 @@ header p { font-size: 11px; font-weight: 300; letter-spacing: 0.12em; color: #88
 <div class="container">
   <header>
     <h1>Stash</h1>
-    <p>Don't get played</p>
+    <p>Älä anna vedättää</p>
   </header>
 
 
@@ -200,30 +202,30 @@ header p { font-size: 11px; font-weight: 300; letter-spacing: 0.12em; color: #88
 
   <div class="players">
     <div class="player pile" id="pile-0" data-pile="0">
-      <div class="label">You</div>
+      <div class="label">Sinä</div>
       <div class="amount" id="y-val">$0</div>
     </div>
     <div class="player pile" id="pile-1" data-pile="1">
-      <div class="label">Opponent</div>
+      <div class="label">Vastustaja</div>
       <div class="amount" id="o-val">$0</div>
     </div>
   </div>
 
   <div class="pot-section pile" id="pile-2" data-pile="2">
-    <div class="label">Pot</div>
+    <div class="label">Potti</div>
     <div class="amount" id="p-val">$1,000,000</div>
   </div>
 
   <div class="actions" id="actions">
-    <button class="action-btn verb-btn" data-verb="double"><span class="name">Double</span><span class="desc">or add to pile</span></button>
-    <button class="action-btn verb-btn" data-verb="halve"><span class="name">Halve</span><span class="desc">any pile</span></button>
-    <button class="action-btn verb-btn" data-verb="move"><span class="name">Move</span><span class="desc">any pile</span></button>
-    <button class="action-btn verb-btn" data-verb="swap"><span class="name">Swap</span><span class="desc">two piles</span></button>
+    <button class="action-btn verb-btn" data-verb="double"><span class="name">Tuplaa</span><span class="desc">tai lisää pinoon</span></button>
+    <button class="action-btn verb-btn" data-verb="halve"><span class="name">Puolita</span><span class="desc">mikä tahansa pino</span></button>
+    <button class="action-btn verb-btn" data-verb="move"><span class="name">Siirrä</span><span class="desc">mikä tahansa pino</span></button>
+    <button class="action-btn verb-btn" data-verb="swap"><span class="name">Vaihda</span><span class="desc">kaksi pinoa</span></button>
   </div>
 
   <div class="history-list" id="log"></div>
-  <div class="exec-order" style="margin-bottom: 14px;"><span class="exec-title">How to Play</span>First hand to 20k wins</div>
-  <div class="exec-order"><span class="exec-title">Resolution Order</span>Double then Halve then Move then Swap</div>
+  <div class="exec-order" style="margin-bottom: 14px;"><span class="exec-title">Näin pelataan</span>Ensimmäinen käsi 20k:ssa voittaa</div>
+  <div class="exec-order"><span class="exec-title">Suoritusjärjestys</span>Tuplaa, sitten Puolita, sitten Siirrä, sitten Vaihda</div>
   
 
   
@@ -234,68 +236,77 @@ header p { font-size: 11px; font-weight: 300; letter-spacing: 0.12em; color: #88
 <div class="info-panel" id="ip">
   <button class="info-close" id="ic">&times;</button>
   <div class="how-to-play">
-    <div class="htp-title">How to Play</div>
-    <p>You win by holding 20k or more in your hand.</p>
-    <p>Any pile can be doubled, halved, moved, or swapped with another.</p>
-    <p>This is a simultaneous action game. While you are making your move, your opponent is making their move.</p>
-    <p>Moves play out at the same time, but there is a resolution order for different actions.</p>
-    <div class="order-line">Double then Halve then Move then Swap</div>
-    <p>If Double is played on an empty pile, it adds money.</p>
-    <div class="htp-title" style="margin-top: 40px;">What Is This Game</div>
-    <p>Stash is a fun project I started to try to learn more about two things: game theory &amp; AI.</p>
-    <p>My goal is to design a simultaneous dilemma game which is also balanced &amp; fun to play. And then to train the strongest possible AI player for it.</p>
-    <p>Unlike turn-based games like chess, play in Stash is simultaneous. You and your opponent make your moves and play them together at the same time. Training an AI for this type of game is harder.</p>
-    <p>The current AI player is pretty strong but not world-class. You might snatch a lucky win. If anyone out there wants to collaborate on a stronger player, contact me.</p>
-    <p>Thanks for visiting, and I hope you enjoy playing Stash.</p>
+    <div class="htp-title">Näin pelataan</div>
+    <p>Voitat, kun kädessäsi on 20 000 tai enemmän.</p>
+    <p>Minkä tahansa pinon voi tuplata, puolittaa, siirtää tai vaihtaa toiseen.</p>
+    <p>Tämä on samanaikaisten siirtojen peli. Kun sinä teet siirtoasi, vastustajasi tekee omaansa.</p>
+    <p>Siirrot tapahtuvat yhtä aikaa, mutta toiminnoilla on suoritusjärjestys.</p>
+    <div class="order-line">Tuplaa, sitten Puolita, sitten Siirrä, sitten Vaihda</div>
+    <p>Jos Tuplaa pelataan tyhjään pinoon, se lisää rahaa.</p>
+    <button class="info-link" id="back-game">Takaisin peliin</button>
+    <button class="info-link" id="to-about" style="margin-top: 10px;">Tietoa pelistä</button>
+  </div>
+</div>
+
+<div class="info-panel" id="ap">
+  <button class="info-close" id="ac">&times;</button>
+  <div class="how-to-play">
+    <div class="htp-title">Tietoa pelistä</div>
+    <p>Stash on hauska projekti, jonka aloitin oppiakseni lisää kahdesta asiasta: peliteoriasta ja tekoälystä.</p>
+    <p>Tavoitteeni on suunnitella samanaikainen dilemmapeli, joka on myös tasapainoinen ja hauska pelata. Ja sitten kouluttaa sille vahvin mahdollinen tekoälypelaaja.</p>
+    <p>Toisin kuin vuoropohjaisissa peleissä kuten shakissa, Stashissa pelataan samanaikaisesti. Sinä ja vastustajasi teette siirtonne ja pelaatte ne yhtä aikaa. Tekoälyn kouluttaminen tällaiseen peliin on vaikeampaa.</p>
+    <p>Nykyinen tekoälypelaaja on melko vahva, muttei maailmanluokkaa. Jos joku haluaa rakentaa vahvemman pelaajan kanssani, ota yhteyttä.</p>
+    <p>Kiitos vierailusta, ja toivottavasti nautit Stashin pelaamisesta.</p>
+    <button class="info-link" id="to-rules">Takaisin ohjeisiin</button>
   </div>
 </div>
 
 <div id="lobby">
   <div class="lb-inner">
-    <div class="lb-head"><h1>Stash</h1><p>Don't get played</p></div>
+    <div class="lb-head"><h1>Stash</h1><p>Älä anna vedättää</p></div>
     <div class="lb-note" id="lb-note"></div>
     <div id="lb-mode" class="menu">
-      <button class="menu-btn" onclick="goLb('lb-human')"><span class="name">Play a Human</span></button>
-      <button class="menu-btn" onclick="startMachine()"><span class="name">Play the Machine</span></button>
+      <button class="menu-btn" onclick="goLb('lb-human')"><span class="name">Pelaa ihmistä vastaan</span></button>
+      <button class="menu-btn" onclick="startMachine()"><span class="name">Pelaa konetta vastaan</span></button>
     </div>
     <div id="lb-human" class="menu hidden">
       <div class="section-title">Play a Human</div>
-      <button class="menu-btn" onclick="hostRoom()"><span class="name">Create a Room</span></button>
-      <button class="menu-btn" onclick="goLb('lb-join')"><span class="name">Join a Room</span></button>
-      <button class="menu-btn" onclick="enterLobby()"><span class="name">Lobby</span></button>
-      <button class="lb-back" onclick="goLb('lb-mode')">Back</button>
+      <button class="menu-btn" onclick="hostRoom()"><span class="name">Luo huone</span></button>
+      <button class="menu-btn" onclick="goLb('lb-join')"><span class="name">Liity huoneeseen</span></button>
+      <button class="menu-btn" onclick="enterLobby()"><span class="name">Aula</span></button>
+      <button class="lb-back" onclick="goLb('lb-mode')">Takaisin</button>
     </div>
     <div id="lb-lobby" class="hidden">
       <div class="section-title">Lobby</div>
-      <div class="lobby-list" id="lb-list"><div class="lobby-empty">No open games.</div></div>
+      <div class="lobby-list" id="lb-list"><div class="lobby-empty">Ei avoimia pelejä.</div></div>
       <div class="menu" style="margin-top: 10px;">
-        <button class="menu-btn" onclick="openGame()"><span class="name">Open a Game</span></button>
+        <button class="menu-btn" onclick="openGame()"><span class="name">Avaa peli</span></button>
       </div>
-      <button class="lb-back" onclick="leaveLobbyScreen()">Back</button>
+      <button class="lb-back" onclick="leaveLobbyScreen()">Takaisin</button>
     </div>
     <div id="lb-name" class="hidden">
       <div class="section-title">Your Name</div>
-      <input class="code-input" id="lb-nameinput" maxlength="10" placeholder="NAME" autocomplete="off" style="letter-spacing: 0.18em; text-indent: 0.18em;">
+      <input class="code-input" id="lb-nameinput" maxlength="10" placeholder="NIMI" autocomplete="off" style="letter-spacing: 0.18em; text-indent: 0.18em;">
       <div class="menu" style="margin-top: 10px;">
-        <button class="menu-btn" onclick="saveName()"><span class="name">Continue</span></button>
+        <button class="menu-btn" onclick="saveName()"><span class="name">Jatka</span></button>
       </div>
-      <button class="lb-back" onclick="goLb('lb-lobby')">Back</button>
+      <button class="lb-back" onclick="goLb('lb-lobby')">Takaisin</button>
     </div>
     <div id="lb-wait" class="hidden">
       <div class="code-display">
-        <div class="label">Room Code</div>
+        <div class="label">Huonekoodi</div>
         <div class="code" id="lb-code">&middot;&middot;&middot;&middot;</div>
-        <div class="wait">Waiting for opponent</div>
+        <div class="wait">Odotetaan vastustajaa</div>
       </div>
-      <button class="lb-back" onclick="leaveRoom()">Back</button>
+      <button class="lb-back" onclick="leaveRoom()">Takaisin</button>
     </div>
     <div id="lb-join" class="hidden">
       <div class="section-title">Join a Room</div>
-      <input class="code-input" id="lb-input" maxlength="4" placeholder="CODE" autocomplete="off">
+      <input class="code-input" id="lb-input" maxlength="4" placeholder="KOODI" autocomplete="off">
       <div class="menu" style="margin-top: 10px;">
-        <button class="menu-btn" onclick="joinRoom()"><span class="name">Join</span></button>
+        <button class="menu-btn" onclick="joinRoom()"><span class="name">Liity</span></button>
       </div>
-      <button class="lb-back" onclick="leaveRoom()">Back</button>
+      <button class="lb-back" onclick="leaveRoom()">Takaisin</button>
     </div>
   </div>
 </div>
@@ -305,7 +316,7 @@ header p { font-size: 11px; font-weight: 300; letter-spacing: 0.12em; color: #88
     <h2 id="ov-t"></h2>
     <div class="result-detail" id="ov-d"></div>
     <div class="result-played" id="ov-p"></div>
-    <button id="ov-b">Again</button>
+    <button id="ov-b">Uudestaan</button>
   </div>
 </div>
 
@@ -515,7 +526,7 @@ function flashGuard(i){
   setTimeout(()=>el.classList.remove('guarded'),600);
 }
 function updateAll(){
-  $('rc').textContent='Round '+rnd;
+  $('rc').textContent='Kierros '+rnd;
   animateValue($('y-val'),prevP1,p1,220,fmtLong);animateValue($('o-val'),prevP2,p2,220,fmtLong);
   animateValue($('p-val'),prevPot,pot,220,fmtLong);
   prevP1=p1;prevP2=p2;prevPot=pot;
@@ -532,7 +543,7 @@ function btns(on){
 // pile ids: 0=p1 hand, 1=p2 hand, 2=pot
 function pileGet(i){return i===0?p1:i===1?p2:pot;}
 function pileSet(i,v){if(i===0)p1=v;else if(i===1)p2=v;else pot=v;}
-function pileName(i){return i===0?'your hand':i===1?"your opponent's hand":'the pot';}
+function pileName(i){return i===0?'kätesi':i===1?'vastustajan käsi':'potti';}
 
 // map actor-relative action to absolute op. actor: 0 = you(p1), 1 = opp(p2)
 function absOp(a, actor){
@@ -545,13 +556,13 @@ function absOp(a, actor){
 }
 
 // narration helpers — sentences from YOUR point of view
-function who(actor){return actor===0?'You':'Your opponent';}
-function whose(actor){return actor===0?'Your':"Your opponent's";}
+function who(actor){return actor===0?'Sinä':'Vastustaja';}
+function whose(actor){return actor===0?'Sinun':'Vastustajan';}
 function conj(actor,y,o){return actor===0?y:o;}   // you halve / opponent halves
 function target(i,actor){
-  if(i===2)return 'the pot';
-  if(i===actor)return conj(actor,'your own hand','their own hand');
-  return conj(actor,"your opponent's hand",'your hand');
+  if(i===2)return 'potin';
+  if(i===actor)return conj(actor,'oman kätesi','oman kätensä');
+  return conj(actor,'vastustajan käden','kätesi');
 }
 
 // ── Resolution: Double → Halve → Stash → Move → Swap ──
@@ -573,18 +584,18 @@ function resolve(a1,a2){
     const nv=old===0?(dbl[i]===2?2000:1000):old*(dbl[i]===2?4:2);
     pileSet(i,nv);
     if(dbl[i]===2){
-      n.push('You both '+(old===0?'added to ':'doubled ')+target(i,0)+'.');
+      n.push('Te molemmat '+(old===0?'lisäsitte rahaa: ':'tuplasitte: ')+target(i,0)+'.');
     } else {
       const actor=dblBy[i][0];
-      n.push(who(actor)+(old===0?' added to ':' doubled ')+target(i,actor)+'.');
+      n.push(who(actor)+(old===0?(actor===0?' lisäsit rahaa: ':' lisäsi rahaa: '):(actor===0?' tuplasit ':' tuplasi '))+target(i,actor)+'.');
     }
   }
 
   snapStep();
 
   // 2. STASH
-  if(o1.t==='stash'){guard[0]=true;n.push('You stashed.');flashGuard(0);}
-  if(o2.t==='stash'){guard[1]=true;n.push('Your opponent stashed.');flashGuard(1);}
+  if(o1.t==='stash'){guard[0]=true;n.push('Sinä stashasit.');flashGuard(0);}
+  if(o2.t==='stash'){guard[1]=true;n.push('Vastustaja stashasi.');flashGuard(1);}
 
   // 3. HALVE — cuts through Stash
   for(const [op,actor] of [[o1,0],[o2,1]]){
@@ -592,9 +603,9 @@ function resolve(a1,a2){
     const old=pileGet(op.x);
     const nv=Math.floor(old/2);
     pileSet(op.x,nv);
-    if(old===0){n.push(who(actor)+' halved an empty pile.');}
+    if(old===0){n.push(who(actor)+(actor===0?' puolitit tyhjän pinon.':' puolitti tyhjän pinon.'));}
     else{
-      let sent=who(actor)+' halved '+target(op.x,actor);
+      let sent=who(actor)+(actor===0?' puolitit ':' puolitti ')+target(op.x,actor);
       
       n.push(sent+'.');
     }
@@ -607,7 +618,7 @@ function resolve(a1,a2){
   for(const [op,actor] of [[o1,0],[o2,1]]){
     if(op.t!=='move')continue;
     const touchesGuarded=(op.s<=1&&guard[op.s]&&op.s!==actor)||(op.d<=1&&guard[op.d]&&op.d!==actor);
-    if(touchesGuarded){n.push(whose(actor)+' move was blocked.');continue;}
+    if(touchesGuarded){n.push(whose(actor)+' siirto estettiin.');continue;}
     moves.push({op,actor});
   }
   if(moves.length){
@@ -617,22 +628,22 @@ function resolve(a1,a2){
       const amt=snap[moves[0].op.s];
       out[moves[0].op.s]=amt;
       inn[moves[0].op.d]+=amt;
-      if(amt>0)n.push('You both stole '+target(moves[0].op.s,0)+'.');
+      if(amt>0)n.push('Te molemmat veitte: '+target(moves[0].op.s,0)+'.');
     } else if(moves.length===2&&moves[0].op.s===moves[1].op.s){
       const half=Math.floor(snap[moves[0].op.s]/2);
       out[moves[0].op.s]=snap[moves[0].op.s];
       inn[moves[0].op.d]+=half; inn[moves[1].op.d]+=half;
-      n.push('You both stole '+target(moves[0].op.s,0)+'. It split.');
+      n.push('Te molemmat veitte: '+target(moves[0].op.s,0)+'. Se jaettiin.');
     } else {
       for(const {op,actor} of moves){
         out[op.s]=snap[op.s];
         inn[op.d]+=snap[op.s];
         const amt=snap[op.s];
-        if(amt===0){n.push(who(actor)+' stole an empty pile.');continue;}
-        if(op.s===2&&op.d===actor)n.push(who(actor)+' took the pot.');
-        else if(op.s===(1-actor)&&op.d===actor)n.push(actor===0?"You stole your opponent's hand.":'Your opponent stole your hand.');
-        else if(op.d===2)n.push(who(actor)+' put '+target(op.s,actor)+' in the pot.');
-        else n.push(who(actor)+' moved '+target(op.s,actor)+' to '+target(op.d,actor)+'.');
+        if(amt===0){n.push(who(actor)+(actor===0?' veit tyhjän pinon.':' vei tyhjän pinon.'));continue;}
+        if(op.s===2&&op.d===actor)n.push(who(actor)+(actor===0?' otit potin.':' otti potin.'));
+        else if(op.s===(1-actor)&&op.d===actor)n.push(actor===0?'Varastit vastustajan käden.':'Vastustaja varasti kätesi.');
+        else if(op.d===2)n.push(who(actor)+(actor===0?' laitoit ':' laittoi ')+target(op.s,actor)+' pottiin.');
+        else n.push(who(actor)+(actor===0?' siirsit ':' siirsi ')+target(op.s,actor)+' kohteeseen '+target(op.d,actor)+'.');
       }
     }
     for(let i=0;i<3;i++)pileSet(i,snap[i]-out[i]+inn[i]);
@@ -647,7 +658,7 @@ function resolve(a1,a2){
     swaps.push({op,actor,c:actor===0?a1:a2});
   }
   if(swaps.length===2&&swaps[0].op.x===swaps[1].op.x&&swaps[0].op.y===swaps[1].op.y){
-    n.push('Both swaps cancelled.');
+    n.push('Molemmat vaihdot kumoutuivat.');
   } else {
     // meddle = swapping the OPPONENT's hand with the pot; meddles resolve before other swaps
     const isMeddle=s=>s.op.x===(1-s.actor)&&s.op.y===2;
@@ -658,7 +669,7 @@ function resolve(a1,a2){
         const half=Math.floor(pot/2);
         const donated=p1+p2;
         pot=donated; p1=half; p2=half;
-        n.push('The pot split. Both hands went in.');
+        n.push('Potti jaettiin. Molemmat kädet menivät sisään.');
         swaps.length=0;
       } else {
         // both swapping own hand with the pot: split the pot, both hands donated
@@ -667,7 +678,7 @@ function resolve(a1,a2){
           const half=Math.floor(pot/2);
           const donated=p1+p2;
           pot=donated; p1=half; p2=half;
-          n.push('The pot split. Both hands went in.');
+          n.push('Potti jaettiin. Molemmat kädet menivät sisään.');
           swaps.length=0;
         }
       }
@@ -675,14 +686,14 @@ function resolve(a1,a2){
     swaps.sort((A,B)=>B.c-A.c);   // canonical: Opp↔Pot, then You↔Pot, then hands — seat-symmetric
     for(const {op,actor} of swaps){
       const blocked=(op.x<=1&&guard[op.x]&&op.x!==actor)||(op.y<=1&&guard[op.y]&&op.y!==actor);
-      if(blocked){n.push(whose(actor)+' swap was blocked.');continue;}
+      if(blocked){n.push(whose(actor)+' vaihto estettiin.');continue;}
       const a=pileGet(op.x), b=pileGet(op.y);
       pileSet(op.x,b);pileSet(op.y,a);
-      if(op.x<=1&&op.y<=1)n.push(actor===0?'You swapped with your opponent.':'Your opponent swapped with you.');
+      if(op.x<=1&&op.y<=1)n.push(actor===0?'Vaihdoit kädet vastustajan kanssa.':'Vastustaja vaihtoi kädet kanssasi.');
       else{
         const other=(op.x===2)?op.y:op.x;
-        if(other===actor)n.push(who(actor)+' swapped with the pot.');
-        else n.push(who(actor)+' swapped '+target(other,actor)+' with the pot.');
+        if(other===actor)n.push(who(actor)+(actor===0?' vaihdoit potin kanssa.':' vaihtoi potin kanssa.'));
+        else n.push(who(actor)+(actor===0?' vaihdoit ':' vaihtoi ')+target(other,actor)+' pottiin.');
       }
     }
   }
@@ -732,7 +743,7 @@ async function play(a1){
   } else {
     if(!mpReady)return;btns(false);
     mpSend({t:'move',r:rnd,id:MYID,a:a1});
-    lg('<span class="detail">Waiting for opponent&hellip;</span>');
+    lg('<span class="detail">Odotetaan vastustajaa&hellip;</span>');
     a2=await mpWaitMove(rnd);
     if(a2===null)return;
   }
@@ -746,16 +757,16 @@ async function play(a1){
     if(r.w!==-1){done=true;
       track('game_end',{result:r.w===1?'win':r.w===2?'loss':'draw',rounds:rnd,
         seconds:Math.round((Date.now()-matchT0)/1000),opponent:oppId,
-        you:fmtLong(p1),opp:fmtLong(p2)});lg('<span class="'+(r.w===1?'win-text':'lose-text')+'">'+(r.w===1?'✦ WIN':r.w===2?'✦ LOSS':'✦ DRAW')+'</span>');updateAll();setTimeout(()=>show(r.w),450);return;}
+        you:fmtLong(p1),opp:fmtLong(p2)});lg('<span class="'+(r.w===1?'win-text':'lose-text')+'">'+(r.w===1?'✦ VOITTO':r.w===2?'✦ TAPPIO':'✦ TASAPELI')+'</span>');updateAll();setTimeout(()=>show(r.w),450);return;}
     rnd++;updateAll();btns(true);
   });
 }
 
 function show(w){
   const m=$('modal'),t=$('ov-t'),d=$('ov-d'),p=$('ov-p');
-  if(w===1){t.textContent='Victory';m.className='modal win';}
-  else if(w===2){t.textContent='Defeat';m.className='modal lose';}
-  else{t.textContent='Draw';m.className='modal draw';}
+  if(w===1){t.textContent='Voitto';m.className='modal win';}
+  else if(w===2){t.textContent='Tappio';m.className='modal lose';}
+  else{t.textContent='Tasapeli';m.className='modal draw';}
   d.textContent=fmtLong(p1)+' vs '+fmtLong(p2);
   p.textContent=lastBody;
   $('ov').classList.remove('hidden');updateAll();
@@ -811,6 +822,10 @@ function toggleInfo(){$('ip').classList.toggle('show');$('iv').classList.toggle(
 $('ib').addEventListener('click',toggleInfo);
 $('iv').addEventListener('click',toggleInfo);
 $('ic').addEventListener('click',toggleInfo);
+$('back-game').addEventListener('click',toggleInfo);
+$('to-about').addEventListener('click',()=>{$('ip').classList.remove('show');$('ap').classList.add('show');});
+$('to-rules').addEventListener('click',()=>{$('ap').classList.remove('show');$('ip').classList.add('show');});
+$('ac').addEventListener('click',()=>{$('ap').classList.remove('show');$('iv').classList.remove('show');});
 $('ov-b').addEventListener('click',mpAgain);
 
 // ── Multiplayer: Supabase realtime — room-code channels, no database ──
@@ -864,15 +879,15 @@ function leaveLobbyScreen(){clearInterval(lobbyTick);goLb('lb-human');}
 function renderLobby(){
   const el=$('lb-list');
   if(!el||$('lb-lobby').classList.contains('hidden'))return;
-  if(!lobbyChan){el.innerHTML='<div class="lobby-empty">No open games.</div>';return;}
+  if(!lobbyChan){el.innerHTML='<div class="lobby-empty">Ei avoimia pelejä.</div>';return;}
   const st=lobbyChan.presenceState();
   const rows=[];
   for(const k in st)for(const m of st[k])if(m.code&&k!==MYID)rows.push(m);
   rows.sort((a,b)=>a.t0-b.t0);
-  if(!rows.length){el.innerHTML='<div class="lobby-empty">No open games.</div>';return;}
+  if(!rows.length){el.innerHTML='<div class="lobby-empty">Ei avoimia pelejä.</div>';return;}
   el.innerHTML=rows.map(m=>{
     const s=Math.max(0,Math.floor((Date.now()-m.t0)/1000));
-    return '<div class="lobby-row" data-code="'+esc(m.code)+'"><span class="pname">'+esc(m.name||'ANON')+'</span><span class="meta2">waiting '+Math.floor(s/60)+':'+String(s%60).padStart(2,'0')+'</span></div>';
+    return '<div class="lobby-row" data-code="'+esc(m.code)+'"><span class="pname">'+esc(m.name||'NIMETÖN')+'</span><span class="meta2">odottanut '+Math.floor(s/60)+':'+String(s%60).padStart(2,'0')+'</span></div>';
   }).join('');
   el.querySelectorAll('.lobby-row').forEach(r=>r.addEventListener('click',()=>{
     clearInterval(lobbyTick);
@@ -923,7 +938,7 @@ function connect(code){
   chan.on('presence',{event:'leave'},()=>{
     if(mpReady){
       mpReady=false;done=true;btns(false);
-      lg('<span class="detail">Your opponent left.</span>');
+      lg('<span class="detail">Vastustajasi poistui.</span>');
       track('opponent_left',{r:rnd,seconds:Math.round((Date.now()-matchT0)/1000)});
       if(moveWaiter){const w=moveWaiter;moveWaiter=null;w.res(null);}
     }
@@ -956,12 +971,12 @@ function mpAgain(){
   if(MODE==='machine'){reset();return;}
   if(meAgain||!mpReady)return;
   meAgain=true;mpSend({t:'again',id:MYID});
-  $('ov-b').textContent='Waiting…';maybeRematch();
+  $('ov-b').textContent='Odotetaan…';maybeRematch();
 }
 function maybeRematch(){
   if(meAgain&&oppAgain){
     meAgain=oppAgain=false;oppMoves={};moveWaiter=null;
-    $('ov-b').textContent='Again';reset();
+    $('ov-b').textContent='Uudestaan';reset();
   }
 }
 
