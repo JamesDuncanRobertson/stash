@@ -84,7 +84,7 @@ header p { font-size: 11px; font-weight: 300; letter-spacing: 0.12em; color: #88
 .round-dots .dot.now { background: #fff; }
 
 
-.history-list { height: 56px; overflow-y: hidden; margin-bottom: 12px; }
+.history-list { min-height: 56px; margin-bottom: 12px; }
 .history-list::-webkit-scrollbar { width: 2px; }
 .history-list::-webkit-scrollbar-track { background: transparent; }
 .history-list::-webkit-scrollbar-thumb { background: #1a1a1a; border-radius: 2px; }
@@ -174,7 +174,7 @@ header p { font-size: 11px; font-weight: 300; letter-spacing: 0.12em; color: #88
   .pot-section .amount { font-size: 30px; }
   .actions { margin-bottom: 18px; gap: 8px; }
   .action-btn { padding: 15px 8px; }
-  .history-list { height: 48px; margin-bottom: 8px; }
+  .history-list { min-height: 48px; margin-bottom: 8px; }
   .exec-order { padding-top: 4px; }
 }
 @media (max-height: 660px) {
@@ -222,7 +222,7 @@ header p { font-size: 11px; font-weight: 300; letter-spacing: 0.12em; color: #88
   </div>
 
   <div class="history-list" id="log"></div>
-  <div class="exec-order" style="margin-bottom: 14px;"><span class="exec-title">How to Play</span>First hand to $20K wins</div>
+  <div class="exec-order" style="margin-bottom: 14px;"><span class="exec-title">How to Play</span>First hand to 20k wins</div>
   <div class="exec-order"><span class="exec-title">Resolution Order</span>Double then Halve then Move then Swap</div>
   
 
@@ -234,20 +234,19 @@ header p { font-size: 11px; font-weight: 300; letter-spacing: 0.12em; color: #88
 <div class="info-panel" id="ip">
   <button class="info-close" id="ic">&times;</button>
   <div class="how-to-play">
-    <div class="htp-title">What Is This Game</div>
-    <p>Stash is a fun game theory project I started to try to learn more about two things: game theory &amp; AI.</p>
-    <p>My goal is to design a game which is balanced &amp; fun to play. And, to train the strongest possible AI player for Stash.</p>
-    <p>The current AI player is ok. Not world-class. If anyone out there knows how to make a stronger player, contact me.</p>
-    <p>Unlike turn-based games like chess, play in Stash is simultaneous. You and your opponent make your moves and play them together at the same time.</p>
-    <div class="htp-title" style="margin-top: 40px;">How to Play</div>
-    <p>The winner is the first player to hold 20k or more in their hand.</p>
+    <div class="htp-title">How to Play</div>
+    <p>You win by holding 20k or more in your hand.</p>
     <p>Any pile can be doubled, halved, moved, or swapped with another.</p>
-    <p>While you are making your move, your opponent is making their move.</p>
+    <p>This is a simultaneous action game. While you are making your move, your opponent is making their move.</p>
     <p>Moves play out at the same time, but there is a resolution order for different actions.</p>
     <div class="order-line">Double then Halve then Move then Swap</div>
-    <p>Double adds money to an empty pile.</p>
-    <p>Thanks for visiting and I hope you enjoy playing Stash.</p>
-    <p class="contact">Contact: James@greyblue.ai</p>
+    <p>If Double is played on an empty pile, it adds money.</p>
+    <div class="htp-title" style="margin-top: 40px;">What Is This Game</div>
+    <p>Stash is a fun project I started to try to learn more about two things: game theory &amp; AI.</p>
+    <p>My goal is to design a simultaneous dilemma game which is also balanced &amp; fun to play. And then to train the strongest possible AI player for it.</p>
+    <p>Unlike turn-based games like chess, play in Stash is simultaneous. You and your opponent make your moves and play them together at the same time. Training an AI for this type of game is harder.</p>
+    <p>The current AI player is pretty strong but not world-class. You might snatch a lucky win. If anyone out there wants to collaborate on a stronger player, contact me.</p>
+    <p>Thanks for visiting, and I hope you enjoy playing Stash.</p>
   </div>
 </div>
 
@@ -740,8 +739,8 @@ async function play(a1){
   lastA1=a1;lastA2=a2;
   track('move',{r:rnd,you:NA[a1],opp:NA[a2],p1:p1,p2:p2,pot:pot});
   const r=resolve(a1,a2);
-  const body=r.n.length?r.n.join(' '):'Nothing happened.';
-  lastBody=body;
+  const body=r.n.length?r.n.join('<br>'):'Nothing happened.';
+  lastBody=r.n.length?r.n.join(' '):'Nothing happened.';
   lg('<span class="detail">'+body+'</span>');
   animateSteps(r.steps,()=>{
     if(r.w!==-1){done=true;
@@ -971,5 +970,6 @@ track('session_start',{ua:navigator.userAgent.slice(0,120)});
 reset();btns(false);goLb('lb-mode');
 
 </script>
+<script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
