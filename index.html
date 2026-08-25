@@ -52,13 +52,13 @@ header p { font-size: 11px; font-weight: 300; letter-spacing: 0.12em; color: #88
 .action-btn .desc { display: block; font-size: 10px; font-weight: 300; color: #666; margin-top: 5px; }
 .verb-btn.armed .desc { color: #aaa; }
 .action-btn:disabled { cursor: default; }
-#kill-btn.spent { opacity: 0.25; pointer-events: none; }
-#kill-btn.spent .name, #kill-btn.spent .desc { color: #555; }
 .action-btn .name { font-size: 12px; font-weight: 500; letter-spacing: 0.03em; color: #ddd; min-width: 52px; }
 .action-btn .desc { font-size: 10px; font-weight: 300; color: #777; flex: 1; }
 
 .verb-btn.armed { background: #1c1c1c; border-color: #444; }
 .verb-btn.armed .name { color: #fff; }
+#kill-btn.spent { opacity: 0.25; pointer-events: none; }
+#kill-btn.spent .name, #kill-btn.spent .desc { color: #555; }
 
 .pile { cursor: default; user-select: none; -webkit-user-select: none; }
 .pile .amount { transition: opacity 0.3s; }
@@ -71,12 +71,12 @@ header p { font-size: 11px; font-weight: 300; letter-spacing: 0.12em; color: #88
 .info-btn { position: fixed; bottom: 16px; right: 16px; width: 32px; height: 32px; border-radius: 50%; background: #111; border: 1px solid #222; color: #999; font-size: 13px; font-family: 'Inter', sans-serif; font-style: italic; cursor: pointer; z-index: 55; transition: all 0.15s; -webkit-tap-highlight-color: transparent; }
 .info-veil { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 54; }
 .info-veil.show { display: block; }
-.info-panel { display: none; position: fixed; inset: 0; background: #0a0a0a; z-index: 60; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 64px 28px 80px; }
+.info-panel { display: none; position: fixed; inset: 0; background: #0a0a0a; z-index: 60; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 72px 26px 90px; }
 .info-panel.show { display: block; }
-.info-panel .how-to-play { margin-top: 0; padding-top: 0; border-top: none; max-width: 440px; margin: 0 auto; }
-.info-panel .htp-title { font-size: 12px; letter-spacing: 0.35em; color: #999; margin: 0 0 24px; }
-.info-panel .how-to-play p { font-size: 16px; font-weight: 300; color: #ddd; line-height: 1.75; margin-bottom: 18px; }
-.info-panel .order-line { text-align: center; font-size: clamp(11px, 3vw, 16px); font-weight: 500; color: #fff; letter-spacing: 0.01em; white-space: nowrap; padding: 16px 0; border-top: 1px solid #262626; border-bottom: 1px solid #262626; margin: 6px 0 24px; }
+.info-panel .how-to-play { margin-top: 0; padding-top: 0; border-top: none; max-width: 430px; margin: 0 auto; }
+.info-panel .htp-title { font-size: 13px; letter-spacing: 0.35em; color: #bbb; margin: 0 0 28px; }
+.info-panel .how-to-play p { font-size: clamp(16px, 4.4vw, 19px); font-weight: 300; color: #ececec; line-height: 1.85; margin-bottom: 22px; }
+.info-panel .order-line { text-align: center; font-size: clamp(11px, 3vw, 16px); font-weight: 600; color: #fff; letter-spacing: 0.01em; white-space: nowrap; padding: 18px 0; border-top: 1px solid #2a2a2a; border-bottom: 1px solid #2a2a2a; margin: 8px 0 26px; }
 .info-panel .contact { color: #888; font-size: 14px; }
 .info-link { display: block; width: 100%; margin-top: 32px; background: #111; border: 1px solid #262626; border-radius: 8px; padding: 16px 8px; text-align: center; font-size: 12px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #ddd; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.15s; -webkit-tap-highlight-color: transparent; }
 .info-link:hover { background: #181818; border-color: #333; color: #fff; }
@@ -111,6 +111,36 @@ header p { font-size: 11px; font-weight: 300; letter-spacing: 0.12em; color: #88
 .how-to-play strong { font-weight: 400; color: #999; }
 
 
+
+/* ── multiplayer lobby ── */
+#lobby { position: fixed; inset: 0; background: #0a0a0a; z-index: 90; padding: 44px 24px 40px; overflow-y: auto; }
+.lb-inner { max-width: 400px; margin: 0 auto; }
+.lb-head { text-align: center; margin-bottom: 56px; }
+.lb-head h1 { font-size: 13px; font-weight: 400; letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 8px; }
+.lb-head p { font-size: 11px; font-weight: 300; letter-spacing: 0.12em; color: #888; }
+.menu { display: grid; gap: 10px; }
+.menu-btn { background: #111; border: 1px solid #1c1c1c; border-radius: 8px; padding: 26px 8px; cursor: pointer; transition: all 0.15s ease; text-align: center; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+.menu-btn .name { display: block; font-size: 12px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #ddd; }
+.menu-btn:active { background: #1e1e1e; }
+.section-title { font-size: 9px; font-weight: 400; letter-spacing: 0.3em; text-transform: uppercase; color: #777; text-align: center; margin: 0 0 14px; }
+.code-display { text-align: center; padding: 18px 24px 26px; }
+.code-display .label { font-size: 9px; font-weight: 400; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin-bottom: 12px; }
+.code-display .code { font-size: 36px; font-weight: 200; letter-spacing: 0.35em; text-indent: 0.35em; color: #fff; }
+.code-display .wait { font-size: 10px; font-weight: 300; color: #666; margin-top: 14px; letter-spacing: 0.08em; }
+.code-display .wait::after { content: ''; animation: lbdots 1.6s steps(4) infinite; }
+@keyframes lbdots { 0% { content: ''; } 25% { content: '.'; } 50% { content: '..'; } 75% { content: '...'; } }
+.code-input { width: 100%; background: #111; border: 1px solid #1c1c1c; border-radius: 8px; color: #fff; font-family: 'Inter', sans-serif; font-size: 22px; font-weight: 200; letter-spacing: 0.35em; text-indent: 0.35em; text-align: center; text-transform: uppercase; padding: 16px 8px; outline: none; transition: border-color 0.15s; }
+.code-input:focus { border-color: #3a3a3a; }
+.code-input::placeholder { color: #444; letter-spacing: 0.35em; }
+.lb-back { display: block; text-align: center; font-size: 10px; font-weight: 300; color: #555; letter-spacing: 0.12em; text-transform: uppercase; margin-top: 28px; cursor: pointer; background: none; border: none; font-family: 'Inter', sans-serif; width: 100%; }
+.lobby-list { display: grid; gap: 8px; }
+.lobby-row { display: flex; justify-content: space-between; align-items: center; background: #111; border: 1px solid #1c1c1c; border-radius: 8px; padding: 16px 18px; cursor: pointer; transition: all 0.15s ease; -webkit-tap-highlight-color: transparent; }
+.lobby-row .pname { font-size: 12px; font-weight: 400; letter-spacing: 0.06em; color: #ddd; }
+.lobby-row .meta2 { font-size: 10px; font-weight: 300; color: #666; font-variant-numeric: tabular-nums; }
+.lobby-row:active { background: #1e1e1e; }
+.lobby-empty { text-align: center; font-size: 11px; font-weight: 300; color: #555; padding: 24px 0; }
+.lb-note { text-align: center; font-size: 10px; font-weight: 300; color: #b66; margin-bottom: 18px; min-height: 1em; }
+
 .overlay { position: fixed; inset: 0; background: rgba(10,10,10,0.97); display: flex; justify-content: center; align-items: center; z-index: 100; }
 .modal { text-align: center; padding: 50px; width: 100%; max-width: 340px; animation: rise 0.3s ease; }
 @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
@@ -129,6 +159,35 @@ header p { font-size: 11px; font-weight: 300; letter-spacing: 0.12em; color: #88
 .pile.pickable:hover .amount { text-shadow: 0 0 30px rgba(255,255,255,0.6); }
 .info-btn:hover { border-color: #444; color: #fff; }
 .modal button:hover { background: #eee; }
+.menu-btn:hover { background: #181818; border-color: #2c2c2c; }
+.menu-btn:hover .name { color: #fff; }
+.lb-back:hover { color: #999; }
+.lobby-row:hover { background: #181818; border-color: #2c2c2c; }
+.lobby-row:hover .pname { color: #fff; }
+}
+
+/* ── fit short phone screens: everything visible, no scroll ── */
+@media (max-height: 780px) {
+  body { padding: 20px 20px 14px; }
+  header { margin-bottom: 22px; }
+  .round-ind { margin: -10px 0 16px; }
+  .players { margin-bottom: 18px; }
+  .player { padding: 10px 12px; }
+  .player .amount { font-size: 20px; }
+  .pot-section { margin-bottom: 26px; padding: 10px 24px; }
+  .pot-section .amount { font-size: 30px; }
+  .actions { margin-bottom: 18px; gap: 8px; }
+  .action-btn { padding: 15px 8px; }
+  .history-list { min-height: 48px; margin-bottom: 8px; }
+  .exec-order { padding-top: 4px; }
+}
+@media (max-height: 660px) {
+  header { margin-bottom: 14px; }
+  .pot-section { margin-bottom: 16px; }
+  .pot-section .amount { font-size: 26px; }
+  .actions { margin-bottom: 12px; }
+  .action-btn { padding: 12px 8px; }
+  .action-btn .desc { display: none; }
 }
 </style>
 </head>
@@ -137,7 +196,7 @@ header p { font-size: 11px; font-weight: 300; letter-spacing: 0.12em; color: #88
 <div class="container">
   <header>
     <h1>Stash</h1>
-    <p>Don't get played</p>
+    <p>First to 20k wins</p>
   </header>
 
 
@@ -160,7 +219,7 @@ header p { font-size: 11px; font-weight: 300; letter-spacing: 0.12em; color: #88
   </div>
 
   <div class="actions" id="actions">
-    <button class="action-btn verb-btn" data-verb="double"><span class="name">Double</span><span class="desc">any pile</span></button>
+    <button class="action-btn verb-btn" data-verb="double"><span class="name">Double</span><span class="desc">or add to pile</span></button>
     <button class="action-btn verb-btn" data-verb="halve"><span class="name">Halve</span><span class="desc">any pile</span></button>
     <button class="action-btn verb-btn" data-verb="move"><span class="name">Move</span><span class="desc">any pile</span></button>
     <button class="action-btn verb-btn" data-verb="swap"><span class="name">Swap</span><span class="desc">two piles</span></button>
@@ -169,7 +228,6 @@ header p { font-size: 11px; font-weight: 300; letter-spacing: 0.12em; color: #88
   </div>
 
   <div class="history-list" id="log"></div>
-  <div class="exec-order" style="margin-bottom: 14px;"><span class="exec-title">How to Play</span>First hand to $20K wins</div>
   <div class="exec-order"><span class="exec-title">Resolution Order</span>Double then Halve then Split then Move then Swap then Shoot</div>
   
 
@@ -208,6 +266,56 @@ header p { font-size: 11px; font-weight: 300; letter-spacing: 0.12em; color: #88
   </div>
 </div>
 
+<div id="lobby">
+  <div class="lb-inner">
+    <div class="lb-head"><h1>Stash</h1><p>Don't get played</p></div>
+    <div class="lb-note" id="lb-note"></div>
+    <div id="lb-mode" class="menu">
+      <button class="menu-btn" onclick="goLb('lb-human')"><span class="name">Play a Human</span></button>
+      <button class="menu-btn" onclick="startMachine()"><span class="name">Play the Machine</span></button>
+    </div>
+    <div id="lb-human" class="menu hidden">
+      <div class="section-title">Play a Human</div>
+      <button class="menu-btn" onclick="hostRoom()"><span class="name">Create a Room</span></button>
+      <button class="menu-btn" onclick="goLb('lb-join')"><span class="name">Join a Room</span></button>
+      <button class="menu-btn" onclick="enterLobby()"><span class="name">Lobby</span></button>
+      <button class="lb-back" onclick="goLb('lb-mode')">Back</button>
+    </div>
+    <div id="lb-lobby" class="hidden">
+      <div class="section-title">Lobby</div>
+      <div class="lobby-list" id="lb-list"><div class="lobby-empty">No open games.</div></div>
+      <div class="menu" style="margin-top: 10px;">
+        <button class="menu-btn" onclick="openGame()"><span class="name">Open a Game</span></button>
+      </div>
+      <button class="lb-back" onclick="leaveLobbyScreen()">Back</button>
+    </div>
+    <div id="lb-name" class="hidden">
+      <div class="section-title">Your Name</div>
+      <input class="code-input" id="lb-nameinput" maxlength="10" placeholder="NAME" autocomplete="off" style="letter-spacing: 0.18em; text-indent: 0.18em;">
+      <div class="menu" style="margin-top: 10px;">
+        <button class="menu-btn" onclick="saveName()"><span class="name">Continue</span></button>
+      </div>
+      <button class="lb-back" onclick="goLb('lb-lobby')">Back</button>
+    </div>
+    <div id="lb-wait" class="hidden">
+      <div class="code-display">
+        <div class="label">Room Code</div>
+        <div class="code" id="lb-code">&middot;&middot;&middot;&middot;</div>
+        <div class="wait">Waiting for opponent</div>
+      </div>
+      <button class="lb-back" onclick="leaveRoom()">Back</button>
+    </div>
+    <div id="lb-join" class="hidden">
+      <div class="section-title">Join a Room</div>
+      <input class="code-input" id="lb-input" maxlength="4" placeholder="CODE" autocomplete="off">
+      <div class="menu" style="margin-top: 10px;">
+        <button class="menu-btn" onclick="joinRoom()"><span class="name">Join</span></button>
+      </div>
+      <button class="lb-back" onclick="leaveRoom()">Back</button>
+    </div>
+  </div>
+</div>
+
 <div class="overlay hidden" id="ov">
   <div class="modal" id="modal">
     <h2 id="ov-t"></h2>
@@ -217,6 +325,7 @@ header p { font-size: 11px; font-weight: 300; letter-spacing: 0.12em; color: #88
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 // Actions (actor perspective): M=mine, O=opp, P=pot
 // 0-5 MOVE: M>P, M>O, P>M, P>O, O>M, O>P
@@ -661,15 +770,29 @@ function animateSteps(steps,then){
   next();
 }
 async function play(a1){
-  if(done)return;btns(false);
-  const a2=await aiChoose();
+  if(done)return;
+  let a2;
+  if(MODE==='machine'){
+    btns(false);
+    a2=aiChoose();
+  } else {
+    if(!mpReady)return;btns(false);
+    mpSend({t:'move',r:rnd,id:MYID,a:a1});
+    lg('<span class="detail">Waiting for opponent&hellip;</span>');
+    a2=await mpWaitMove(rnd);
+    if(a2===null)return;
+  }
   lastA1=a1;lastA2=a2;
+  track('move',{r:rnd,you:NA[a1],opp:NA[a2],p1:p1,p2:p2,pot:pot});
   const r=resolve(a1,a2);
   const body=r.n.length?r.n.join('<br>'):'Nothing happened.';
   lastBody=r.n.length?r.n.join(' '):'Nothing happened.';
   lg('<span class="detail">'+body+'</span>');
   animateSteps(r.steps,()=>{
-    if(r.w!==-1){done=true;lg('<span class="'+(r.w===1?'win-text':'lose-text')+'">'+(r.w===1?'✦ WIN':r.w===2?'✦ LOSS':'✦ DRAW')+'</span>');updateAll();setTimeout(()=>show(r.w),450);return;}
+    if(r.w!==-1){done=true;
+      track('game_end',{result:r.w===1?'win':r.w===2?'loss':'draw',rounds:rnd,
+        seconds:Math.round((Date.now()-matchT0)/1000),opponent:oppId,
+        you:fmtLong(p1),opp:fmtLong(p2)});lg('<span class="'+(r.w===1?'win-text':'lose-text')+'">'+(r.w===1?'✦ WIN':r.w===2?'✦ LOSS':'✦ DRAW')+'</span>');updateAll();setTimeout(()=>show(r.w),450);return;}
     rnd++;updateAll();btns(true);
   });
 }
@@ -685,6 +808,8 @@ function show(w){
 }
 
 function reset(){
+  matchT0=Date.now();
+  if(MODE)track('game_start',{opponent:oppId});
   p1=HAND_START;p2=HAND_START;pot=SP;rnd=1;done=false;ammo=[true,true];
   prevP1=HAND_START;prevP2=HAND_START;prevPot=SP;
   $('ov').classList.add('hidden');$('log').innerHTML='';
@@ -696,6 +821,7 @@ const MOVE_IDX={'0,2':0,'0,1':1,'2,0':2,'2,1':3,'1,0':4,'1,2':5};
 const SWAP_IDX={'0,1':12,'0,2':13,'1,2':14};
 let verb=null, firstPick=-1;
 
+function disarmClear(){if(!done)lg('');}
 function disarm(){
   verb=null;firstPick=-1;
   document.querySelectorAll('.verb-btn').forEach(b=>b.classList.remove('armed'));
@@ -706,6 +832,7 @@ function arm(v,btn){
   document.querySelectorAll('.pile').forEach(p=>{
     p.classList.add('pickable');
   });
+  lg('<span class="detail">'+(verb==='double'?'Pick a pile to double.':verb==='halve'?'Pick a pile to halve.':verb==='move'?'Pick a pile to move.':'Pick two piles to swap.')+'</span>');
 }
 function pileClicked(i){
   if(!verb||done)return;
@@ -714,6 +841,7 @@ function pileClicked(i){
   if(firstPick===-1){
     firstPick=i;
     $('pile-'+i).classList.remove('pickable');$('pile-'+i).classList.add('chosen');
+    lg('<span class="detail">'+(verb==='move'?'Now pick where it goes.':'Now pick the second pile.')+'</span>');
     return;
   }
   if(i===firstPick){disarm();return;}
@@ -722,9 +850,11 @@ function pileClicked(i){
   disarm();play(a);
 }
 
+$('split-btn').addEventListener('click',()=>{if(!done){disarm();play(15);}});
+$('kill-btn').addEventListener('click',()=>{if(!done&&ammo[0]){disarm();play(16);}});
 document.querySelectorAll('.verb-btn').forEach(b=>b.addEventListener('click',()=>{
   if(done)return;
-  if(b.classList.contains('armed')){disarm();return;}
+  if(b.classList.contains('armed')){disarm();disarmClear();return;}
   arm(b.dataset.verb,b);
 }));
 document.querySelectorAll('.pile').forEach(p=>p.addEventListener('click',()=>pileClicked(parseInt(p.dataset.pile))));
@@ -736,10 +866,165 @@ $('back-game').addEventListener('click',toggleInfo);
 $('to-about').addEventListener('click',()=>{$('ip').classList.remove('show');$('ap').classList.add('show');});
 $('to-rules').addEventListener('click',()=>{$('ap').classList.remove('show');$('ip').classList.add('show');});
 $('ac').addEventListener('click',()=>{$('ap').classList.remove('show');$('iv').classList.remove('show');});
-$('split-btn').addEventListener('click',()=>{if(!done){disarm();play(15);}});
-$('kill-btn').addEventListener('click',()=>{if(!done&&ammo[0]){disarm();play(16);}});
-$('ov-b').addEventListener('click',reset);
-reset();
+$('ov-b').addEventListener('click',mpAgain);
+
+// ── Multiplayer: Supabase realtime — room-code channels, no database ──
+// SETUP: create a free project at supabase.com, then paste the two values
+// from Project Settings → API below. Nothing else to configure.
+const SUPABASE_URL='https://sbjuizyiyvslkkpfbmie.supabase.co';
+const SUPABASE_ANON_KEY='sb_publishable_-C0wTbLabsXmHHznbw_-EA_FakLTjGY';
+
+const MYID=Math.random().toString(36).slice(2,10);
+let MODE=null;         // 'machine' or 'human'
+let sb=null,chan=null,mpReady=false;
+let oppMoves={},moveWaiter=null,meAgain=false,oppAgain=false;
+let lobbyChan=null,lobbyTick=null,myName=null,lobbyOpen=false;
+try{myName=localStorage.getItem('stashName');}catch(e){}
+
+// ── telemetry: every visit, match, move, and result → Supabase 'events' table ──
+let DEVID=MYID;
+try{
+  DEVID=localStorage.getItem('stashDev')||'';
+  if(!DEVID){DEVID=Math.random().toString(36).slice(2,12);localStorage.setItem('stashDev',DEVID);}
+}catch(e){}
+let curRoom=null,oppId=null,matchT0=Date.now();
+function track(type,data){
+  try{
+    client().from('events').insert({player:DEVID,name:myName||null,room:curRoom,
+      mode:MODE,type:type,data:data||{}}).then(()=>{},()=>{});
+  }catch(e){}
+}
+
+function startMachine(){
+  MODE='machine';curRoom=null;oppId='machine';
+  track('match_start',{opponent:'machine'});
+  if(chan){chan.unsubscribe();chan=null;}
+  $('lobby').classList.add('hidden');
+  reset();
+}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+function enterLobby(){
+  if(SUPABASE_URL.indexOf('PASTE')===0){$('lb-note').textContent='Add your Supabase URL and key at the top of the script first.';return;}
+  goLb('lb-lobby');
+  if(!lobbyChan){
+    lobbyChan=client().channel('stash-lobby',{config:{presence:{key:MYID}}});
+    lobbyChan.on('presence',{event:'sync'},renderLobby);
+    lobbyChan.subscribe();
+  }
+  clearInterval(lobbyTick);lobbyTick=setInterval(renderLobby,1000);
+  renderLobby();
+}
+function leaveLobbyScreen(){clearInterval(lobbyTick);goLb('lb-human');}
+function renderLobby(){
+  const el=$('lb-list');
+  if(!el||$('lb-lobby').classList.contains('hidden'))return;
+  if(!lobbyChan){el.innerHTML='<div class="lobby-empty">No open games.</div>';return;}
+  const st=lobbyChan.presenceState();
+  const rows=[];
+  for(const k in st)for(const m of st[k])if(m.code&&k!==MYID)rows.push(m);
+  rows.sort((a,b)=>a.t0-b.t0);
+  if(!rows.length){el.innerHTML='<div class="lobby-empty">No open games.</div>';return;}
+  el.innerHTML=rows.map(m=>{
+    const s=Math.max(0,Math.floor((Date.now()-m.t0)/1000));
+    return '<div class="lobby-row" data-code="'+esc(m.code)+'"><span class="pname">'+esc(m.name||'ANON')+'</span><span class="meta2">waiting '+Math.floor(s/60)+':'+String(s%60).padStart(2,'0')+'</span></div>';
+  }).join('');
+  el.querySelectorAll('.lobby-row').forEach(r=>r.addEventListener('click',()=>{
+    clearInterval(lobbyTick);
+    connect(r.dataset.code);
+  }));
+}
+function openGame(){
+  if(!myName){goLb('lb-name');const i=$('lb-nameinput');i.value='';i.focus();return;}
+  postOpen();
+}
+function saveName(){
+  const v=$('lb-nameinput').value.trim().toUpperCase();
+  if(!v)return;
+  myName=v;
+  try{localStorage.setItem('stashName',v);}catch(e){}
+  postOpen();
+}
+function postOpen(){
+  const code=makeCode();
+  lobbyOpen=true;
+  if(lobbyChan)lobbyChan.track({name:myName,code:code,t0:Date.now()});
+  $('lb-code').textContent=code;
+  goLb('lb-wait');
+  connect(code);
+}
+
+function client(){if(!sb)sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);return sb;}
+function goLb(id){['lb-mode','lb-human','lb-wait','lb-join','lb-lobby','lb-name'].forEach(s=>$(s).classList.toggle('hidden',s!==id));$('lobby').classList.remove('hidden');}
+function makeCode(){const A='ABCDEFGHJKMNPQRSTUVWXYZ';let c='';for(let i=0;i<4;i++)c+=A[Math.floor(Math.random()*A.length)];return c;}
+
+function hostRoom(){const code=makeCode();$('lb-code').textContent=code;goLb('lb-wait');connect(code);}
+function joinRoom(){const code=$('lb-input').value.trim().toUpperCase();if(code.length!==4)return;connect(code);}
+function leaveRoom(){
+  if(chan){chan.unsubscribe();chan=null;}
+  if(lobbyOpen&&lobbyChan){lobbyChan.untrack();lobbyOpen=false;}
+  goLb('lb-human');
+}
+
+function connect(code){
+  curRoom=code;
+  if(SUPABASE_URL.indexOf('PASTE')===0){$('lb-note').textContent='Add your Supabase URL and key at the top of the script first.';goLb('lb-mode');return;}
+  if(chan){chan.unsubscribe();chan=null;}
+  chan=client().channel('stash-'+code,{config:{broadcast:{self:false},presence:{key:MYID}}});
+  chan.on('broadcast',{event:'msg'},({payload})=>onMsg(payload));
+  chan.on('presence',{event:'sync'},()=>{
+    if(!mpReady&&Object.keys(chan.presenceState()).length>=2)matchStart();
+  });
+  chan.on('presence',{event:'leave'},()=>{
+    if(mpReady){
+      mpReady=false;done=true;btns(false);
+      lg('<span class="detail">Your opponent left.</span>');
+      track('opponent_left',{r:rnd,seconds:Math.round((Date.now()-matchT0)/1000)});
+      if(moveWaiter){const w=moveWaiter;moveWaiter=null;w.res(null);}
+    }
+  });
+  chan.subscribe(st=>{if(st==='SUBSCRIBED')chan.track({id:MYID});});
+}
+function matchStart(){
+  MODE='human';
+  try{oppId=Object.keys(chan.presenceState()).find(k=>k!==MYID)||null;}catch(e){oppId=null;}
+  track('match_start',{room:curRoom,opponent:oppId});
+  mpReady=true;oppMoves={};moveWaiter=null;meAgain=oppAgain=false;
+  if(lobbyOpen&&lobbyChan){lobbyChan.untrack();lobbyOpen=false;}
+  clearInterval(lobbyTick);
+  $('lobby').classList.add('hidden');reset();
+}
+function mpSend(p){chan.send({type:'broadcast',event:'msg',payload:p});}
+function onMsg(p){
+  if(p.id===MYID)return;
+  if(p.t==='move'){
+    oppMoves[p.r]=p.a;
+    if(moveWaiter&&moveWaiter.r===p.r){const w=moveWaiter;moveWaiter=null;w.res(p.a);}
+  }
+  if(p.t==='again'){oppAgain=true;maybeRematch();}
+}
+function mpWaitMove(r){
+  if(oppMoves[r]!==undefined)return Promise.resolve(oppMoves[r]);
+  return new Promise(res=>{moveWaiter={r,res};});
+}
+function mpAgain(){
+  if(MODE==='machine'){reset();return;}
+  if(meAgain||!mpReady)return;
+  meAgain=true;mpSend({t:'again',id:MYID});
+  $('ov-b').textContent='Waiting…';maybeRematch();
+}
+function maybeRematch(){
+  if(meAgain&&oppAgain){
+    meAgain=oppAgain=false;oppMoves={};moveWaiter=null;
+    $('ov-b').textContent='Again';reset();
+  }
+}
+
+// boot: show the lobby, keep the board locked until a match starts
+track('session_start',{ua:navigator.userAgent.slice(0,120)});
+reset();btns(false);goLb('lb-mode');
+
 </script>
+<script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
