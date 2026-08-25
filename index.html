@@ -69,9 +69,14 @@ header p { font-size: 11px; font-weight: 300; letter-spacing: 0.12em; color: #88
 .info-btn { position: fixed; bottom: 16px; right: 16px; width: 32px; height: 32px; border-radius: 50%; background: #111; border: 1px solid #222; color: #999; font-size: 13px; font-family: 'Inter', sans-serif; font-style: italic; cursor: pointer; z-index: 55; transition: all 0.15s; -webkit-tap-highlight-color: transparent; }
 .info-veil { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 54; }
 .info-veil.show { display: block; }
-.info-panel { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%); width: min(340px, calc(100vw - 48px)); background: #111; border: 1px solid #262626; border-radius: 10px; padding: 24px; z-index: 55; }
+.info-panel { display: none; position: fixed; inset: 0; background: #0a0a0a; z-index: 60; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 64px 28px 80px; }
 .info-panel.show { display: block; }
-.info-panel .how-to-play { margin-top: 0; padding-top: 0; border-top: none; }
+.info-panel .how-to-play { margin-top: 0; padding-top: 0; border-top: none; max-width: 440px; margin: 0 auto; }
+.info-panel .htp-title { font-size: 12px; letter-spacing: 0.35em; color: #999; margin: 0 0 24px; }
+.info-panel .how-to-play p { font-size: 16px; font-weight: 300; color: #ddd; line-height: 1.75; margin-bottom: 18px; }
+.info-panel .order-line { text-align: center; font-size: 15px; color: #fff; letter-spacing: 0.04em; padding: 14px 0; border-top: 1px solid #1c1c1c; border-bottom: 1px solid #1c1c1c; margin: 4px 0 22px; }
+.info-panel .contact { color: #888; font-size: 14px; }
+.info-close { position: fixed; top: 18px; right: 20px; width: 36px; height: 36px; border-radius: 50%; background: #141414; border: 1px solid #262626; color: #bbb; font-size: 17px; font-family: 'Inter', sans-serif; cursor: pointer; z-index: 61; -webkit-tap-highlight-color: transparent; }
 
 .round-dots { display: flex; justify-content: center; gap: 8px; margin: 18px 0 30px; }
 .round-dots .dot { width: 5px; height: 5px; border-radius: 50%; background: #222; transition: background 0.3s; }
@@ -214,12 +219,11 @@ header p { font-size: 11px; font-weight: 300; letter-spacing: 0.12em; color: #88
     <button class="action-btn verb-btn" data-verb="halve"><span class="name">Halve</span><span class="desc">any pile</span></button>
     <button class="action-btn verb-btn" data-verb="move"><span class="name">Move</span><span class="desc">any pile</span></button>
     <button class="action-btn verb-btn" data-verb="swap"><span class="name">Swap</span><span class="desc">two piles</span></button>
-    <button class="action-btn" id="stash-btn" style="grid-column: 1 / -1;"><span class="name">Stash</span><span class="desc">Safeguard your pile</span></button>
   </div>
 
   <div class="history-list" id="log"></div>
   <div class="exec-order" style="margin-bottom: 14px;"><span class="exec-title">How to Play</span>First hand to $20K wins</div>
-  <div class="exec-order"><span class="exec-title">Resolution Order</span>Double then Halve then Stash then Move then Swap</div>
+  <div class="exec-order"><span class="exec-title">Resolution Order</span>Double then Halve then Move then Swap</div>
   
 
   
@@ -228,22 +232,22 @@ header p { font-size: 11px; font-weight: 300; letter-spacing: 0.12em; color: #88
 <button class="info-btn" id="ib">i</button>
 <div class="info-veil" id="iv"></div>
 <div class="info-panel" id="ip">
+  <button class="info-close" id="ic">&times;</button>
   <div class="how-to-play">
     <div class="htp-title">What Is This Game</div>
-    <p>Stash is a fun game-theory project that I created, to try to learn more about two things: game-theory &amp; AI.</p>
+    <p>Stash is a fun game theory project I started to try to learn more about two things: game theory &amp; AI.</p>
     <p>My goal is to design a game which is balanced &amp; fun to play. And, to train the strongest possible AI player for Stash.</p>
-    <p>The current AI player is ok. Not world-class. If anyone out there knows how to make a stronger one, contact me.</p>
+    <p>The current AI player is ok. Not world-class. If anyone out there knows how to make a stronger player, contact me.</p>
     <p>Unlike turn-based games like chess, play in Stash is simultaneous. You and your opponent make your moves and play them together at the same time.</p>
-    <div class="htp-title" style="margin-top: 18px;">How to Play</div>
-    <p>The winner is the first player to put 20k or more in their hand.</p>
+    <div class="htp-title" style="margin-top: 40px;">How to Play</div>
+    <p>The winner is the first player to hold 20k or more in their hand.</p>
     <p>Any pile can be doubled, halved, moved, or swapped with another.</p>
     <p>While you are making your move, your opponent is making their move.</p>
     <p>Moves play out at the same time, but there is a resolution order for different actions.</p>
-    <p style="padding-left: 14px;">Double then Halve then Stash then Move then Swap.</p>
-    <p>Stash makes your pile immune to Move or Swap. But your pile can still be Doubled or Halved.</p>
+    <div class="order-line">Double then Halve then Move then Swap</div>
     <p>Double adds money to an empty pile.</p>
     <p>Thanks for visiting and I hope you enjoy playing Stash.</p>
-    <p>Contact: James@greyblue.ai</p>
+    <p class="contact">Contact: James@greyblue.ai</p>
   </div>
 </div>
 
@@ -327,7 +331,7 @@ const $=id=>document.getElementById(id);
 
 
 // ── AI: trained value network + 1-round lookahead, regret-matched mix ──
-const LEGAL=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+const LEGAL=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14];   // Stash removed
 const NL=LEGAL.length;
 
 function simAbs(a,actor){
@@ -804,10 +808,10 @@ document.querySelectorAll('.verb-btn').forEach(b=>b.addEventListener('click',()=
   arm(b.dataset.verb,b);
 }));
 document.querySelectorAll('.pile').forEach(p=>p.addEventListener('click',()=>pileClicked(parseInt(p.dataset.pile))));
-$('stash-btn').addEventListener('click',()=>{if(!done){disarm();play(15);}});
 function toggleInfo(){$('ip').classList.toggle('show');$('iv').classList.toggle('show');}
 $('ib').addEventListener('click',toggleInfo);
 $('iv').addEventListener('click',toggleInfo);
+$('ic').addEventListener('click',toggleInfo);
 $('ov-b').addEventListener('click',mpAgain);
 
 // ── Multiplayer: Supabase realtime — room-code channels, no database ──
