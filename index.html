@@ -38,8 +38,8 @@ body {
 }
 
 header { text-align: center; margin-bottom: 40px; }
-header h1 { display: inline-block; margin-right: -0.4em; font-size: 20px; font-weight: 400; letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 10px; color: #fff; }
-header p { display: block; font-size: 14px; font-weight: 300; letter-spacing: 0.12em; margin-right: -0.12em; color: #ddd; }
+header h1 { display: inline-block; margin-right: -0.4em; font-size: 13px; font-weight: 400; letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 8px; }
+header p { display: block; font-size: 11px; font-weight: 300; letter-spacing: 0.12em; margin-right: -0.12em; color: #888; }
 
 .pile.guarded { animation: guardflash 0.55s ease; }
 @keyframes guardflash { 0% { border-color: transparent; } 30% { border-color: #999; } 100% { border-color: transparent; } }
@@ -102,10 +102,6 @@ header p { display: block; font-size: 14px; font-weight: 300; letter-spacing: 0.
 .reader-page { display: none; max-width: 430px; margin: 0 auto; animation: pagein 0.22s ease; }
 .reader-page.on { display: block; }
 @keyframes pagein { from { opacity: 0; } to { opacity: 1; } }
-.reader-foot { position: fixed; left: 0; right: 0; bottom: calc(14px + env(safe-area-inset-bottom)); text-align: center; z-index: 62; pointer-events: none; }
-.reader-foot .count { font-size: 11px; letter-spacing: 0.25em; color: #666; }
-.reader-foot .bar { width: 120px; height: 1px; background: #222; margin: 10px auto 0; position: relative; }
-.reader-foot .bar i { position: absolute; left: 0; top: 0; bottom: 0; background: #888; display: block; }
 .reader-end { pointer-events: auto; position: relative; z-index: 63; }
 .order-list { max-width: 220px; margin: 26px auto 8px; }
 .order-list .step { display: flex; align-items: baseline; gap: 16px; font-size: 16px; font-weight: 300; color: #ececec; letter-spacing: 0.18em; text-transform: uppercase; padding: 10px 0; }
@@ -153,8 +149,8 @@ header p { display: block; font-size: 14px; font-weight: 300; letter-spacing: 0.
 #lobby { position: fixed; inset: 0; background: #0a0a0a; z-index: 90; padding: 44px 24px 40px; overflow-y: auto; }
 .lb-inner { max-width: 400px; margin: 0 auto; }
 .lb-head { text-align: center; margin-bottom: 56px; }
-.lb-head h1 { display: inline-block; margin-right: -0.4em; font-size: 20px; font-weight: 400; letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 10px; color: #fff; }
-.lb-head p { display: block; font-size: 14px; font-weight: 300; letter-spacing: 0.12em; margin-right: -0.12em; color: #ddd; }
+.lb-head h1 { display: inline-block; margin-right: -0.4em; font-size: 13px; font-weight: 400; letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 8px; }
+.lb-head p { display: block; font-size: 11px; font-weight: 300; letter-spacing: 0.12em; margin-right: -0.12em; color: #888; }
 .menu { display: grid; gap: 10px; }
 .menu-btn { background: #111; border: 1px solid #1c1c1c; border-radius: 8px; padding: 31px 8px; cursor: pointer; transition: all 0.15s ease; text-align: center; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
 .menu-btn .name { display: block; font-size: 12px; font-weight: 500; letter-spacing: 0.12em; text-indent: 0.12em; text-transform: uppercase; color: #ddd; }
@@ -279,7 +275,8 @@ header p { display: block; font-size: 14px; font-weight: 300; letter-spacing: 0.
     <div class="reader-page" data-pg="0">
       <div class="htp-title">What Is Stash?</div>
       <p>Stash is a strategy game.</p>
-      <p>It's simple on the surface, and easy to learn. But it contains complexity.</p>
+      <p>It's simple on the surface, and easy to learn.</p>
+      <p>But it contains complexity.</p>
       <p>It is a 'simultaneous action' game.</p>
       <p>Players do not play their moves in turns, like in chess.</p>
       <p>Players choose their own moves in secret, simultaneously.</p>
@@ -298,7 +295,7 @@ header p { display: block; font-size: 14px; font-weight: 300; letter-spacing: 0.
 
     <div class="reader-page" data-pg="2">
       <div class="htp-title">Actions</div>
-      <p class="act"><span class="act-name">DOUBLE</span> the amount in any pile (also adds to an empty pile)</p>
+      <p class="act"><span class="act-name">DOUBLE</span> any pile or add to $0</p>
       <p class="act"><span class="act-name">HALVE</span> the amount in any pile</p>
       <p class="act"><span class="act-name">SPLIT</span> all the money on the table between the players</p>
       <p class="act"><span class="act-name">MOVE</span> any pile of money to anywhere else</p>
@@ -332,14 +329,16 @@ header p { display: block; font-size: 14px; font-weight: 300; letter-spacing: 0.
 
     <div class="reader-page" data-pg="5">
       <div class="htp-title">The A.I. Opponent</div>
-      <p>Training an A.I. player for simultaneous action is somewhat less researched than for turn-based games, where the A.I. can have better information about its opponents' moves.</p>
+      <p>Training an A.I. player for simultaneous action is somewhat less researched than it is for turn-based games like chess.</p>
+      <p>Typically, A.I. training involves better information about other players' moves.</p>
       <p>In simultaneous action games, A.I. has to make its best guess about what the opponent will do in the same turn.</p>
       <p>The thinking is more approximate than decisive.</p>
     </div>
 
     <div class="reader-page" data-pg="6">
       <div class="htp-title">The A.I. Opponent</div>
-      <p>To train the A.I. player, I gave it a little bit of search depth (it 'thinks' 3 moves ahead), and then it played millions of rounds against itself, so that it could learn to improve. This is quite basic, and there are lots of methods out there for creating and improving A.I. players in this type of game.</p>
+      <p>To train the A.I. player, I gave it a little bit of search depth (it 'thinks' 3 moves ahead), and then it played millions of rounds against itself, so that it could learn to improve.</p>
+      <p>This is quite basic, and there are lots of methods out there for creating and improving A.I. players in this type of game.</p>
       <p>If anyone out there has any suggestions for how to create a better or different A.I. stash player, please get in touch. I would love to learn more.</p>
     </div>
 
@@ -349,10 +348,6 @@ header p { display: block; font-size: 14px; font-weight: 300; letter-spacing: 0.
       <div class="reader-end"><button class="info-link" id="back-game">Back to Game</button></div>
     </div>
 
-  </div>
-  <div class="reader-foot">
-    <span class="count" id="rp-count">1 of 9</span>
-    <div class="bar"><i id="rp-bar" style="width:11%"></i></div>
   </div>
 </div>
 
@@ -926,7 +921,7 @@ const MOVE_IDX={'0,2':0,'0,1':1,'2,0':2,'2,1':3,'1,0':4,'1,2':5};
 const SWAP_IDX={'0,1':12,'0,2':13,'1,2':14};
 let verb=null, firstPick=-1;
 
-function pickPrompt(){lg('<span class="detail">Win the game by putting 20k in your hand</span><br><span class="detail">Or by eliminating your opponent</span><br><span class="detail">Start by picking an action</span>');}
+function pickPrompt(){lg('<span class="detail">Win the game by putting 20k in your hand</span><br><span class="detail">Or by eliminating your opponent</span>');}
 function disarmClear(){if(!done){if(rnd===1)pickPrompt();else lg('');}}
 function disarm(){
   verb=null;firstPick=-1;
@@ -969,8 +964,6 @@ let rPage=0;
 function rShow(i){
   rPage=Math.max(0,Math.min(R_PAGES.length-1,i));
   R_PAGES.forEach(p=>p.classList.toggle('on',parseInt(p.dataset.pg)===rPage));
-  $('rp-count').textContent=(rPage+1)+' of '+R_PAGES.length;
-  $('rp-bar').style.width=(100*(rPage+1)/R_PAGES.length)+'%';
 }
 (function(){
   const ctl=document.createElement('div');
