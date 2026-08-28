@@ -27,7 +27,8 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-.container { max-width: 400px; margin: 0 auto; }
+.container { max-width: 400px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; flex: 1; }
+body { display: flex; flex-direction: column; }
 
 /* installed full-screen mode: respect the notch and home bar, tighten the stretch */
 @media (display-mode: standalone) {
@@ -123,7 +124,8 @@ header p { display: block; font-size: 11px; font-weight: 300; letter-spacing: 0.
 .round-dots .dot.now { background: #fff; }
 
 
-.history-list { min-height: 56px; margin-bottom: 12px; }
+.history-list { min-height: 56px; margin-bottom: 12px; flex: 1; padding-bottom: 56px; }
+.history-list.centered { display: flex; flex-direction: column; justify-content: center; }
 .history-list::-webkit-scrollbar { width: 2px; }
 .history-list::-webkit-scrollbar-track { background: transparent; }
 .history-list::-webkit-scrollbar-thumb { background: #1a1a1a; border-radius: 2px; }
@@ -638,7 +640,7 @@ function updateAll(){
   $('y-val').className='amount'+(leading===1?' hot':'');
   $('o-val').className='amount'+(leading===2?' hot':'');
 }
-function lg(h){$('log').innerHTML='<div class="history-entry">'+h+'</div>';}
+function lg(h){$('log').classList.remove('centered');$('log').innerHTML='<div class="history-entry">'+h+'</div>';}
 function btns(on){
   document.querySelectorAll('.action-btn').forEach(b=>b.disabled=!on);
   $('kill-btn').disabled=!on||done||!ammo[0];   // spent bullets stay spent
@@ -921,7 +923,7 @@ const MOVE_IDX={'0,2':0,'0,1':1,'2,0':2,'2,1':3,'1,0':4,'1,2':5};
 const SWAP_IDX={'0,1':12,'0,2':13,'1,2':14};
 let verb=null, firstPick=-1;
 
-function pickPrompt(){lg('<span class="detail">Win the game by putting 20k in your hand</span><br><span class="detail">Or by eliminating your opponent</span>');}
+function pickPrompt(){lg('<span class="detail">Win the game by putting 20k in your hand</span><br><span class="detail">Or by eliminating your opponent</span>');$('log').classList.add('centered');}
 function disarmClear(){if(!done){if(rnd===1)pickPrompt();else lg('');}}
 function disarm(){
   verb=null;firstPick=-1;
