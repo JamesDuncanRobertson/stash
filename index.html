@@ -180,6 +180,15 @@ header p { display: block; font-size: 11px; font-weight: 300; letter-spacing: 0.
 .web3-row span:first-child { color: #666; }
 .web3-row span:last-child { color: #ddd; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .web3-note { margin-top: 14px; text-align: center; color: #555; font-size: 9px; font-weight: 300; letter-spacing: 0.04em; }
+.stake-field { display: flex; align-items: center; background: #111; border: 1px solid #1c1c1c; border-radius: 8px; padding: 0 17px; }
+.stake-field input { min-width: 0; flex: 1; background: none; border: 0; outline: none; color: #fff; font-family: 'Inter', sans-serif; font-size: 22px; font-weight: 200; padding: 18px 0; font-variant-numeric: tabular-nums; }
+.stake-field input::placeholder { color: #444; }
+.stake-field span { color: #666; font-size: 10px; font-weight: 400; letter-spacing: 0.12em; }
+.money-wait { text-align: center; padding: 16px 24px 24px; }
+.money-wait .stake { color: #fff; font-size: 30px; font-weight: 200; font-variant-numeric: tabular-nums; }
+.money-wait .unit { color: #666; font-size: 9px; font-weight: 400; letter-spacing: 0.2em; margin-top: 7px; }
+.money-wait .wait { color: #666; font-size: 10px; font-weight: 300; letter-spacing: 0.08em; margin-top: 28px; }
+.money-wait .wait::after { content: ''; animation: lbdots 1.6s steps(4) infinite; }
 
 .overlay { position: fixed; inset: 0; background: rgba(10,10,10,0.97); display: flex; justify-content: center; align-items: center; z-index: 100; }
 .modal { text-align: center; padding: 50px; width: 100%; max-width: 340px; animation: rise 0.3s ease; }
@@ -386,10 +395,53 @@ header p { display: block; font-size: 11px; font-weight: 300; letter-spacing: 0.
         <div class="web3-row"><span>Network</span><span id="web3-network">Base Sepolia</span></div>
       </div>
       <div class="menu">
-        <button class="menu-btn" id="web3-connect" onclick="web3Connect()"><span class="name">Connect MetaMask</span></button>
+        <button class="menu-btn" id="web3-connect" onclick="web3Action()"><span class="name">Connect MetaMask</span></button>
       </div>
       <div class="web3-note">Test network · no real funds</div>
       <button class="lb-back" onclick="goLb('lb-human')">Back</button>
+    </div>
+    <div id="lb-money-lobby" class="hidden">
+      <div class="section-title">Open Games</div>
+      <div class="lobby-list" id="money-list"><div class="lobby-empty">No open games.</div></div>
+      <div class="menu" style="margin-top: 10px;">
+        <button class="menu-btn" onclick="openMoneyGame()"><span class="name">Post a Game</span></button>
+      </div>
+      <div class="web3-note">Base Sepolia · test stakes only</div>
+      <button class="lb-back" onclick="leaveMoneyLobbyScreen()">Back</button>
+    </div>
+    <div id="lb-money-post" class="hidden">
+      <div class="section-title">Your Stake</div>
+      <div class="stake-field">
+        <input id="money-stake" inputmode="decimal" placeholder="50" autocomplete="off">
+        <span>USDC</span>
+      </div>
+      <div class="menu" style="margin-top: 10px;">
+        <button class="menu-btn" onclick="postMoneyGame()"><span class="name">Post Game</span></button>
+      </div>
+      <div class="web3-note">Your opponent stakes the same amount</div>
+      <button class="lb-back" onclick="goLb('lb-money-lobby')">Back</button>
+    </div>
+    <div id="lb-money-accept" class="hidden">
+      <div class="section-title">Game</div>
+      <div class="web3-card">
+        <div class="web3-row"><span>Player</span><span id="money-opponent">—</span></div>
+        <div class="web3-row"><span>Stake</span><span id="money-accept-stake">—</span></div>
+        <div class="web3-row"><span>Prize</span><span id="money-prize">—</span></div>
+      </div>
+      <div class="menu">
+        <button class="menu-btn" onclick="acceptMoneyGame()"><span class="name">Accept Game</span></button>
+      </div>
+      <div class="web3-note">Test lobby · no funds move yet</div>
+      <button class="lb-back" onclick="goLb('lb-money-lobby')">Back</button>
+    </div>
+    <div id="lb-money-wait" class="hidden">
+      <div class="money-wait">
+        <div class="stake" id="money-wait-stake">—</div>
+        <div class="unit">USDC EACH</div>
+        <div class="wait">Waiting for opponent</div>
+      </div>
+      <div class="web3-note">Test lobby · no funds move yet</div>
+      <button class="lb-back" onclick="cancelMoneyGame()">Cancel</button>
     </div>
     <div id="lb-lobby" class="hidden">
       <div class="section-title">Lobby</div>
@@ -1042,6 +1094,7 @@ rShow(0);
 $('ov-b').addEventListener('click',mpAgain);
 function toMenu(){
   try{if(typeof chan!=='undefined'&&chan){chan.unsubscribe();}}catch(e){}
+  try{closeMoneyLobbyChannel();}catch(e){}
   mpReady=false;MODE=null;
   if(moveWaiter){const w=moveWaiter;moveWaiter=null;w.res(null);}
   reset();btns(false);goLb('lb-mode');
@@ -1066,6 +1119,8 @@ let MODE=null;         // 'machine' or 'human'
 let sb=null,chan=null,mpReady=false;
 let oppMoves={},moveWaiter=null,meAgain=false,oppAgain=false;
 let lobbyChan=null,lobbyTick=null,myName=null,lobbyOpen=false;
+let moneyLobbyChan=null,moneyLobbyTick=null,moneyLobbyReady=false,moneyLobbyOpen=false;
+let moneyOffers={},selectedMoneyGame=null,moneyStake=null;
 try{myName=localStorage.getItem('stashName');}catch(e){}
 
 const BASE_SEPOLIA='0x14a34';
@@ -1080,7 +1135,7 @@ function web3Short(a){return a?a.slice(0,6)+'…'+a.slice(-4):'Not connected';}
 function web3Render(){
   $('web3-address').textContent=web3Short(web3Account);
   $('web3-network').textContent=web3Chain===BASE_SEPOLIA?'Base Sepolia':'Wrong network';
-  $('web3-connect').querySelector('.name').textContent=!web3Account?'Connect MetaMask':web3Chain===BASE_SEPOLIA?'Connected':'Switch Network';
+  $('web3-connect').querySelector('.name').textContent=!web3Account?'Connect MetaMask':web3Chain===BASE_SEPOLIA?'Enter Lobby':'Switch Network';
 }
 async function web3Open(){
   $('lb-note').textContent='';goLb('lb-money');
@@ -1090,9 +1145,16 @@ async function web3Open(){
   }
   web3Render();
 }
+async function web3Action(){
+  if(!web3Account||web3Chain!==BASE_SEPOLIA){
+    const connected=await web3Connect();
+    if(!connected)return;
+  }
+  enterMoneyLobby();
+}
 async function web3Connect(){
   const p=web3Provider();
-  if(!p){$('lb-note').textContent='MetaMask not found in this browser.';return;}
+  if(!p){$('lb-note').textContent='MetaMask not found in this browser.';return false;}
   try{
     const a=await p.request({method:'eth_requestAccounts'});web3Account=a&&a[0]||null;
     web3Chain=await p.request({method:'eth_chainId'});
@@ -1107,9 +1169,10 @@ async function web3Connect(){
       }
       web3Chain=await p.request({method:'eth_chainId'});
     }
-    $('lb-note').textContent='';web3Render();
+    $('lb-note').textContent='';web3Render();return true;
   }catch(e){
     $('lb-note').textContent=e&&e.code===4001?'Wallet request cancelled.':'Could not connect MetaMask.';
+    return false;
   }
 }
 const injectedWeb3=web3Provider();
@@ -1140,6 +1203,85 @@ function startMachine(){
   reset();
 }
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+function cleanStake(raw){
+  const s=String(raw).trim();
+  if(!/^\d+(\.\d{1,6})?$/.test(s)||Number(s)<=0)return null;
+  const p=s.split('.');
+  const whole=p[0].replace(/^0+(?=\d)/,'');
+  const dec=(p[1]||'').replace(/0+$/,'');
+  return whole+(dec?'.'+dec:'');
+}
+function doubleStake(s){return parseFloat((Number(s)*2).toFixed(6)).toString();}
+function closeMoneyLobbyChannel(){
+  clearInterval(moneyLobbyTick);moneyLobbyTick=null;
+  if(moneyLobbyChan){
+    if(moneyLobbyOpen)moneyLobbyChan.untrack();
+    moneyLobbyChan.unsubscribe();moneyLobbyChan=null;
+  }
+  moneyLobbyReady=false;moneyLobbyOpen=false;
+}
+function enterMoneyLobby(){
+  if(!web3Account||web3Chain!==BASE_SEPOLIA){goLb('lb-money');return;}
+  $('lb-note').textContent='';goLb('lb-money-lobby');
+  if(!moneyLobbyChan){
+    moneyLobbyChan=client().channel('stash-money-lobby',{config:{presence:{key:MYID}}});
+    moneyLobbyChan.on('presence',{event:'sync'},renderMoneyLobby);
+    moneyLobbyChan.subscribe(st=>{
+      if(st==='SUBSCRIBED'){moneyLobbyReady=true;renderMoneyLobby();}
+    });
+  }
+  clearInterval(moneyLobbyTick);moneyLobbyTick=setInterval(renderMoneyLobby,1000);
+  renderMoneyLobby();
+}
+function leaveMoneyLobbyScreen(){closeMoneyLobbyChannel();goLb('lb-money');}
+function renderMoneyLobby(){
+  const el=$('money-list');
+  if(!el||$('lb-money-lobby').classList.contains('hidden'))return;
+  if(!moneyLobbyChan){el.innerHTML='<div class="lobby-empty">No open games.</div>';return;}
+  const st=moneyLobbyChan.presenceState();
+  const rows=[];moneyOffers={};
+  for(const k in st)for(const m of st[k]){
+    const sameWallet=web3Account&&m.wallet&&m.wallet.toLowerCase()===web3Account.toLowerCase();
+    if(m.code&&m.stake&&k!==MYID&&!sameWallet){rows.push(m);moneyOffers[m.code]=m;}
+  }
+  rows.sort((a,b)=>a.t0-b.t0);
+  if(!rows.length){el.innerHTML='<div class="lobby-empty">No open games.</div>';return;}
+  el.innerHTML=rows.map(m=>'<div class="lobby-row" data-code="'+esc(m.code)+'"><span class="pname">'+esc(web3Short(m.wallet))+'</span><span class="meta2">'+esc(m.stake)+' USDC</span></div>').join('');
+  el.querySelectorAll('.lobby-row').forEach(r=>r.addEventListener('click',()=>showMoneyOffer(r.dataset.code)));
+}
+function openMoneyGame(){
+  $('lb-note').textContent='';goLb('lb-money-post');
+  const i=$('money-stake');i.value='';i.focus();
+}
+async function postMoneyGame(){
+  const stake=cleanStake($('money-stake').value);
+  if(!stake){$('lb-note').textContent='Enter a valid USDC stake.';return;}
+  if(!moneyLobbyChan||!moneyLobbyReady){$('lb-note').textContent='Lobby is still connecting.';return;}
+  const code=makeCode();moneyStake=stake;moneyLobbyOpen=true;
+  try{await moneyLobbyChan.track({wallet:web3Account,stake:stake,code:code,t0:Date.now()});}
+  catch(e){moneyLobbyOpen=false;$('lb-note').textContent='Could not post the game.';return;}
+  $('money-wait-stake').textContent=stake;goLb('lb-money-wait');connect(code);
+}
+function showMoneyOffer(code){
+  const offer=moneyOffers[code];if(!offer)return;
+  selectedMoneyGame=offer;
+  $('money-opponent').textContent=web3Short(offer.wallet);
+  $('money-accept-stake').textContent=offer.stake+' USDC';
+  $('money-prize').textContent=doubleStake(offer.stake)+' USDC';
+  goLb('lb-money-accept');
+}
+function acceptMoneyGame(){
+  if(!selectedMoneyGame)return;
+  moneyStake=selectedMoneyGame.stake;
+  $('money-wait-stake').textContent=moneyStake;goLb('lb-money-wait');
+  connect(selectedMoneyGame.code);
+}
+function cancelMoneyGame(){
+  if(chan){chan.unsubscribe();chan=null;}
+  if(moneyLobbyOpen&&moneyLobbyChan)moneyLobbyChan.untrack();
+  moneyLobbyOpen=false;moneyStake=null;goLb('lb-money-lobby');renderMoneyLobby();
+}
 
 function enterLobby(){
   if(SUPABASE_URL.indexOf('PASTE')===0){$('lb-note').textContent='Add your Supabase URL and key at the top of the script first.';return;}
@@ -1192,7 +1334,7 @@ function postOpen(){
 }
 
 function client(){if(!sb)sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);return sb;}
-function goLb(id){['lb-mode','lb-human','lb-free','lb-money','lb-wait','lb-join','lb-lobby','lb-name'].forEach(s=>$(s).classList.toggle('hidden',s!==id));$('lobby').classList.remove('hidden');}
+function goLb(id){['lb-mode','lb-human','lb-free','lb-money','lb-money-lobby','lb-money-post','lb-money-accept','lb-money-wait','lb-wait','lb-join','lb-lobby','lb-name'].forEach(s=>$(s).classList.toggle('hidden',s!==id));$('lobby').classList.remove('hidden');}
 function makeCode(){const A='ABCDEFGHJKMNPQRSTUVWXYZ';let c='';for(let i=0;i<4;i++)c+=A[Math.floor(Math.random()*A.length)];return c;}
 
 function hostRoom(){const code=makeCode();$('lb-code').textContent=code;goLb('lb-wait');connect(code);}
@@ -1229,6 +1371,7 @@ function matchStart(){
   mpReady=true;oppMoves={};moveWaiter=null;meAgain=oppAgain=false;
   if(lobbyOpen&&lobbyChan){lobbyChan.untrack();lobbyOpen=false;}
   clearInterval(lobbyTick);
+  closeMoneyLobbyChannel();
   $('lobby').classList.add('hidden');reset();
 }
 function mpSend(p){chan.send({type:'broadcast',event:'msg',payload:p});}
